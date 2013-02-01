@@ -10,7 +10,7 @@
 
 #define VERSION			1
 
-// Mode debug : 1 => ON ; 0 => OFF
-#define DEBUG_MODE 		1
+// Mode debug
+#define DEBUG_MODE
 
 #endif /* DEFINE_H_ */
