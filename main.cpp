@@ -27,16 +27,21 @@ int main(void) {
 
 // Method de configuration pour le fonctionnement du programme
 void setup() {
-	// Initialisation du port série en debug seulement (cf define.h)
-	if (DEBUG_MODE == 1) {
-		Serial.begin(115200);
-		Serial.println(" == INITIALISATION GRAND ROBOT ==");
-	}
+	// ------------------------------------------------------------- //
+	// Initialisation du port série en debug seulement (cf define.h) //
+	// ------------------------------------------------------------- //
+#ifdef DEBUG_MODE
+	Serial.begin(115200);
+	Serial.println(" == INITIALISATION GRAND ROBOT ==");
+#endif
 
+	// ---------- //
+	// Config I2C //
+	// ---------- //
 	Wire.begin();
-	if (DEBUG_MODE == 1) {
-		Serial.println(" - I2C [OK] (Master)");
-	}
+#ifdef DEBUG_MODE
+	Serial.println(" - I2C [OK] (Master)");
+#endif
 }
 
 // Méthode appelé encore et encore, tant que la carte reste alimenté.
