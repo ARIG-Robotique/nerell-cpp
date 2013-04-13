@@ -1,11 +1,21 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <robot/system/servos/SD21.h>
+#include <robot/utils/Convertion.h>
+#include <robot/RobotManager.h>
 
 #include "define.h"
 
 // Prototype des fonctions
 void setup();
 void loop();
+
+// Classe de convertion
+//Convertion Conv = Convertion(4.044, 11.36);
+
+// Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
+//RobotManager RM = RobotManager();
+SD21 servoManager = SD21();
 
 // ------------------------------------------------------- //
 // ------------------------- MAIN ------------------------ //
@@ -30,24 +40,27 @@ void setup() {
 	// ------------------------------------------------------------- //
 	// Initialisation du port série en debug seulement (cf define.h) //
 	// ------------------------------------------------------------- //
-#ifdef DEBUG_MODE
 	Serial.begin(115200);
-	Serial.println(" == INITIALISATION GRAND ROBOT ==");
-#endif
-
+	Serial.println(" == INITIALISATION ROBOT RECYCLE ==");
 	// ---------- //
 	// Config I2C //
 	// ---------- //
 	Wire.begin();
-#ifdef DEBUG_MODE
 	Serial.println(" - I2C [OK] (Master)");
-#endif
+
+	// ------------- //
+	// Servo manager //
+	// ------------- //
+	servoManager.printVersion();
+
+	// -- //
+	// IO //
+	// -- //
+	Serial.println(" - I/O [OK]");
 }
 
 // Méthode appelé encore et encore, tant que la carte reste alimenté.
 void loop() {
-	// TODO : IA pour le robot
-
 	// Processing de l'asservissement.
 	//RM.process();
 }
