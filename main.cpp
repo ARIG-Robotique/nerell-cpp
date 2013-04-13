@@ -32,9 +32,8 @@ void setup() {
 	// ------------------------------------------------------------- //
 #ifdef DEBUG_MODE
 	Serial.begin(115200);
-	Serial.println(" == INITIALISATION GRAND ROBOT ==");
+	Serial.println(" == INITIALISATION ROBOT RECYCLE ==");
 #endif
-
 	// ---------- //
 	// Config I2C //
 	// ---------- //
