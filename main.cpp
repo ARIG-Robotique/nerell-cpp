@@ -1,9 +1,8 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <robot/system/servos/SD21.h>
 #include <robot/utils/Convertion.h>
 #include <robot/RobotManager.h>
-#include <robot/system/servos/SD21.h>
-#include <robot/system/motors/MD22.h>
 
 #include "define.h"
 
@@ -16,8 +15,7 @@ void loop();
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 //RobotManager RM = RobotManager();
-//SD21 servoManager;
-//MD22 mot;
+SD21 servoManager = SD21();
 
 // ------------------------------------------------------- //
 // ------------------------- MAIN ------------------------ //
@@ -44,35 +42,25 @@ void setup() {
 	// ------------------------------------------------------------- //
 	Serial.begin(115200);
 	Serial.println(" == INITIALISATION ROBOT RECYCLE ==");
-#ifdef DEBUG_MODE
-#endif
 	// ---------- //
 	// Config I2C //
 	// ---------- //
 	Wire.begin();
-#ifdef DEBUG_MODE
 	Serial.println(" - I2C [OK] (Master)");
-#endif
 
 	// ------------- //
 	// Servo manager //
 	// ------------- //
-	//servoManager = SD21();
+	servoManager.printVersion();
 
-	pinMode(LED_BUILTIN, OUTPUT);
+	// -- //
+	// IO //
+	// -- //
+	Serial.println(" - I/O [OK]");
 }
 
 // Méthode appelé encore et encore, tant que la carte reste alimenté.
 void loop() {
-	//servoManager.setPositionAndSpeed(1, 10, 600);
-	digitalWrite(LED_BUILTIN, HIGH);
-	delay(5000);
-
-	//servoManager.setSpeed(1, 20);
-	//servoManager.setPosition(1, 1800);
-	digitalWrite(LED_BUILTIN, LOW);
-	delay(5000);
-
 	// Processing de l'asservissement.
 	//RM.process();
 }
