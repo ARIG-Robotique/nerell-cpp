@@ -12,7 +12,8 @@
 
 #define VERSION			1
 
-#define TPS_MATCH		89000 // 89 sec pour palier au pb de r�action du bonhomme
+#define TPS_MATCH		89000 // 89 sec pour palier au pb de réaction du bonhomme
+#define START_GONFLAGE	92000 // 92 sec pour démarrer le gonflage des ballon
 
 // IO des capteurs //
 // --------------- //
