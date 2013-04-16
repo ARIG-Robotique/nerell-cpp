@@ -51,10 +51,35 @@ POUR INFOS
 #define K_P_ORIENTATION		1.50
 #define K_I_ORIENTATION		0.00
 #define K_D_ORIENTATION		0.00
+
+// ------------------------------- //
+// Configuration des servo moteurs //
+// ------------------------------- //
+
+#define SERVO_BRAS_DROIT		1
+#define SERVO_BRAS_GAUCHE		2
+#define SERVO_RAMASSE_VERRE		3
+
+#define BRAS_DROIT_HOME			800
+#define BRAS_DROIT_CDX_HAUT		1200
+#define BRAS_DROIT_BOG_HAUT		1800
+#define BRAS_DROIT_BOG_BAS		1000
+
+#define BRAS_GAUCHE_HOME		800
+#define BRAS_GAUCHE_CDX_HAUT	1200
+#define BRAS_GAUCHE_BOG_HAUT	1800
+#define BRAS_GAUCHE_BOG_BAS		1000
+
+#define RAMASSE_VERRE_CLOSE		1200
+#define RAMASSE_VERRE_OPEN		1800
+
+// --------------- //
 // IO des capteurs //
 // --------------- //
+
 #define EQUIPE_PIN		9
 #define TIRETTE			SWITCH_01
 #define TIRETTE_PIN		8
+// TODO : Autre capteurs
 
 #endif /* DEFINE_H_ */
