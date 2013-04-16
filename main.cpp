@@ -20,7 +20,7 @@ void endMatch();
 Convertion Conv = Convertion(4.044, 11.36);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
-RobotManager RM = RobotManager();
+RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
 Board2007NoMux capteurs = Board2007NoMux();
 
@@ -57,7 +57,7 @@ int main(void) {
 
 		// Gestion du temps
 	} while(millis() - startMatch <= TPS_MATCH);
-	RM.stop();
+	robotManager.stop();
 
 	Serial.println(" == FIN DU MATCH ==");
 
@@ -96,7 +96,12 @@ void setup() {
 	// ------------- //
 	// Robot manager //
 	// ------------- //
-	RM.init();
+	robotManager.init();
+	robotManager.setSampleTime(TIME_ASSERV_MS);
+	robotManager.setPIDDistance(K_P_DISTANCE, K_I_DISTANCE, K_D_DISTANCE);
+	robotManager.setPIDOrientation(K_P_ORIENTATION, K_I_ORIENTATION, K_D_ORIENTATION);
+	robotManager.setRampAcc(RAMPE_ACC_DISTANCE, RAMPE_ACC_ORIENTATION);
+	robotManager.setRampDec(RAMPE_DEC_DISTANCE, RAMPE_DEC_ORIENTATION);
 
 	// -- //
 	// IO //
@@ -110,7 +115,7 @@ void setup() {
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
 void matchLoop() {
 	// Processing de l'asservissement.
-	RM.process();
+	robotManager.process();
 }
 
 // Méthode appelé pour la fin du match.
