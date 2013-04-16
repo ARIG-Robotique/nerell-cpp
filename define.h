@@ -39,6 +39,18 @@ POUR INFOS
 
 #define RAMPE_ACC_ORIENTATION		500.0 		// en mm/s2
 #define RAMPE_DEC_ORIENTATION		100.0 		// en mm/s2
+
+// -------------- //
+// Parametres PID //
+// -------------- //
+
+#define K_P_DISTANCE   		1.50
+#define K_I_DISTANCE   		0.00
+#define K_D_DISTANCE   		0.00
+
+#define K_P_ORIENTATION		1.50
+#define K_I_ORIENTATION		0.00
+#define K_D_ORIENTATION		0.00
 // IO des capteurs //
 // --------------- //
 #define EQUIPE_PIN		9
