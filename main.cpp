@@ -19,8 +19,8 @@ void endMatch();
 // Classe de convertion
 Convertion Conv = Convertion(4.044, 11.36);
 
-// Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
-RobotManager RM = RobotManager();
+// Classe de gestion du robot (asserv, odom√©trie, pathfinding, evittement, etc...)
+RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
 Board2007NoMux capteurs = Board2007NoMux();
 
@@ -28,15 +28,15 @@ Board2007NoMux capteurs = Board2007NoMux();
 // ------------------------- MAIN ------------------------ //
 // ------------------------------------------------------- //
 
-// Point d'entrée du programme
+// Point d'entr√©e du programme
 int main(void) {
-	// Initialisation du SDK Arduino. A réécrire si on veut customisé tout le bouzin.
+	// Initialisation du SDK Arduino. A r√©√©crire si on veut customiser tout le bouzin.
 	init();
 
 	// Initialisation de l'application
 	setup();
 
-	// Procédure d'initialisation Robot (calage, tirette, etc).
+	// Proc√©dure d'initialisation Robot (calage, tirette, etc).
 	Serial.println(" == INIT MATCH ==");
 
 	Serial.println(" - Attente tirette ....");
@@ -57,31 +57,27 @@ int main(void) {
 
 		// Gestion du temps
 	} while(millis() - startMatch <= TPS_MATCH);
-	RM.stop();
+	robotManager.stop();
 
 	Serial.println(" == FIN DU MATCH ==");
+
+	// Attente du temps de d√©marrage de la fin du match
+	while(millis() - startMatch <= START_GONFLAGE);
 	endMatch();
 
-	int servo = 1;
+	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
 	while(true) {
 		digitalWrite(LED_BUILTIN, HIGH);
-		servoManager.setPosition(servo, 600);
 		delay(1000);
 		digitalWrite(LED_BUILTIN, LOW);
-		servoManager.setPosition(servo, 1800);
 		delay(1000);
-
-		servo++;
-		if (servo > 3) {
-			servo = 1;
-		}
 	}
 }
 
-// Method de configuration pour le fonctionnement du programme
+// Methode de configuration pour le fonctionnement du programme
 void setup() {
 	// ------------------------------------------------------------- //
-	// Initialisation du port série en debug seulement (cf define.h) //
+	// Initialisation du port s√©rie en debug seulement (cf define.h) //
 	// ------------------------------------------------------------- //
 	Serial.begin(115200);
 	Serial.println(" == INITIALISATION ROBOT RECYCLE ==");
@@ -100,7 +96,12 @@ void setup() {
 	// ------------- //
 	// Robot manager //
 	// ------------- //
-	RM.init();
+	robotManager.init();
+	robotManager.setSampleTime(TIME_ASSERV_MS);
+	robotManager.setPIDDistance(K_P_DISTANCE, K_I_DISTANCE, K_D_DISTANCE);
+	robotManager.setPIDOrientation(K_P_ORIENTATION, K_I_ORIENTATION, K_D_ORIENTATION);
+	robotManager.setRampAcc(RAMPE_ACC_DISTANCE, RAMPE_ACC_ORIENTATION);
+	robotManager.setRampDec(RAMPE_DEC_DISTANCE, RAMPE_DEC_ORIENTATION);
 
 	// -- //
 	// IO //
@@ -111,18 +112,26 @@ void setup() {
 	Serial.println(" - I/O [OK]");
 }
 
-// Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
+// M√©thode appel√© encore et encore, tant que le temps du match n'est pas √©coul√©.
 void matchLoop() {
 	// Processing de l'asservissement.
-	RM.process();
+	robotManager.process();
 }
 
-// Méthode appelé pour la fin du match.
+// M√©thode appel√© pour la fin du match.
 void endMatch() {
-	// TODO : Gonflage ballon
 	Serial.println(" == GONFLAGE BALLONS ==");
+	// TODO : Gonflage ballon
 }
 
 // ------------------------------------------------------- //
 // -------------------- BUSINESS METHODS ----------------- //
 // ------------------------------------------------------- //
+
+/*
+ * M√©thode retournant l'information de pr√©sence d'un obstacle (adversaire ???)
+ */
+boolean hasObstacle() {
+	// TODO : Liste de capteurs indiquant que le robot est face √† un autre.
+	return false;
+}
