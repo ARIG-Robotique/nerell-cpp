@@ -115,8 +115,8 @@ void matchLoop() {
 
 // Méthode appelé pour la fin du match.
 void endMatch() {
-	// TODO : Gonflage ballon
 	Serial.println(" == GONFLAGE BALLONS ==");
+	// TODO : Gonflage ballon
 }
 
 // ------------------------------------------------------- //
