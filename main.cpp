@@ -37,20 +37,28 @@ int main(void) {
 	setup();
 
 	// Procédure d'initialisation Robot (calage, tirette, etc).
+#ifdef DEBUG_MODE
 	Serial.println(" == INIT MATCH ==");
-
 	Serial.println(" - Attente tirette ....");
+#endif
 	while(capteurs.readCapteurValue(TIRETTE));
 
+#ifdef DEBUG_MODE
 	Serial.print(" - Equipe : ");
+#endif
 	if (capteurs.readCapteurValue(EQUIPE)) {
+#ifdef DEBUG_MODE
 		Serial.println("ROUGE");
+#endif
 	} else {
+#ifdef DEBUG_MODE
 		Serial.println("BLEU");
+#endif
 	}
 
+#ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
-
+#endif
 	startMatch = millis();
 	do {
 		matchLoop();
@@ -59,8 +67,9 @@ int main(void) {
 	} while(millis() - startMatch <= TPS_MATCH);
 	robotManager.stop();
 
+#ifdef DEBUG_MODE
 	Serial.println(" == FIN DU MATCH ==");
-
+#endif
 	// Attente du temps de démarrage de la fin du match
 	while(millis() - startMatch <= START_GONFLAGE);
 	endMatch();
@@ -79,19 +88,25 @@ void setup() {
 	// ------------------------------------------------------------- //
 	// Initialisation du port série en debug seulement (cf define.h) //
 	// ------------------------------------------------------------- //
+#ifdef DEBUG_MODE
 	Serial.begin(115200);
 	Serial.println(" == INITIALISATION ROBOT RECYCLE ==");
+#endif
 
 	// ---------- //
 	// Config I2C //
 	// ---------- //
 	Wire.begin();
+#ifdef DEBUG_MODE
 	Serial.println(" - I2C [OK] (Master)");
+#endif
 
 	// ------------- //
 	// Servo manager //
 	// ------------- //
+#ifdef DEBUG_MODE
 	servoManager.printVersion();
+#endif
 
 	// ------------- //
 	// Robot manager //
@@ -109,18 +124,22 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, true);
 	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN);
+#ifdef DEBUG_MODE
 	Serial.println(" - I/O [OK]");
+#endif
 }
 
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
 void matchLoop() {
 	// Processing de l'asservissement.
-	robotManager.process();
+	//robotManager.process();
 }
 
 // Méthode appelé pour la fin du match.
 void endMatch() {
+#ifdef DEBUG_MODE
 	Serial.println(" == GONFLAGE BALLONS ==");
+#endif
 	// TODO : Gonflage ballon
 }
 
