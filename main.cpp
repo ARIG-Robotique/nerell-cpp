@@ -104,6 +104,9 @@ void setup() {
 	Serial.println(" - I2C [OK] (Master)");
 #endif
 
+	// Tempo attente pour boot autre carte
+	delay(2000);
+
 	// ------------- //
 	// Servo manager //
 	// ------------- //
@@ -128,7 +131,7 @@ void setup() {
 	// IO //
 	// -- //
 	pinMode(LED_BUILTIN, OUTPUT);
-	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, true);
+	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, false); // FIXME : Dans la vraie vie ce sera true
 	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN);
 #ifdef DEBUG_MODE
 	Serial.println(" - I/O [OK]");
