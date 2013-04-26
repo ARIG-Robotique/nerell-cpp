@@ -51,18 +51,15 @@ int main(void) {
 		heartBeat();
 	}
 
+	int team = capteurs.readCapteurValue(EQUIPE);
 #ifdef DEBUG_MODE
 	Serial.print(" - Equipe : ");
-#endif
-	if (capteurs.readCapteurValue(EQUIPE)) {
-#ifdef DEBUG_MODE
+	if (team) {
 		Serial.println("ROUGE");
-#endif
 	} else {
-#ifdef DEBUG_MODE
 		Serial.println("BLEU");
-#endif
 	}
+#endif
 
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
@@ -123,6 +120,9 @@ void setup() {
 	robotManager.setPIDOrientation(K_P_ORIENTATION, K_I_ORIENTATION, K_D_ORIENTATION);
 	robotManager.setRampAcc(RAMPE_ACC_DISTANCE, RAMPE_ACC_ORIENTATION);
 	robotManager.setRampDec(RAMPE_DEC_DISTANCE, RAMPE_DEC_ORIENTATION);
+#ifdef DEBUG_MODE
+	Serial.println(" - Robot manager [OK]");
+#endif
 
 	// -- //
 	// IO //
