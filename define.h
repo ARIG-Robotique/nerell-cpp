@@ -12,6 +12,8 @@
 
 #define VERSION			1
 
+#define DEBUG_MODE
+
 #define TPS_MATCH		89000 // 89 sec pour palier au pb de réaction du bonhomme
 #define START_GONFLAGE	92000 // 92 sec pour démarrer le gonflage des ballon
 
