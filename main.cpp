@@ -132,7 +132,7 @@ void setup() {
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
 void matchLoop() {
 	// Processing de l'asservissement.
-	//robotManager.process();
+	robotManager.process();
 }
 
 // Méthode appelé pour la fin du match.
