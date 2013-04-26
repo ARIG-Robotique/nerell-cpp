@@ -15,6 +15,12 @@ unsigned long startMatch;
 void setup();
 void matchLoop();
 void endMatch();
+void heartBeat();
+
+// Heartbeat variables
+int heartTimePrec;
+int heartTime;
+boolean heart;
 
 // Classe de convertion
 Convertion Conv = Convertion(4.044, 11.36);
@@ -41,7 +47,9 @@ int main(void) {
 	Serial.println(" == INIT MATCH ==");
 	Serial.println(" - Attente tirette ....");
 #endif
-	while(capteurs.readCapteurValue(TIRETTE));
+	while(capteurs.readCapteurValue(TIRETTE)) {
+		heartBeat();
+	}
 
 #ifdef DEBUG_MODE
 	Serial.print(" - Equipe : ");
@@ -61,6 +69,7 @@ int main(void) {
 #endif
 	startMatch = millis();
 	do {
+		heartBeat();
 		matchLoop();
 
 		// Gestion du temps
@@ -76,10 +85,7 @@ int main(void) {
 
 	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
 	while(true) {
-		digitalWrite(LED_BUILTIN, HIGH);
-		delay(1000);
-		digitalWrite(LED_BUILTIN, LOW);
-		delay(1000);
+		heartBeat();
 	}
 }
 
@@ -127,6 +133,10 @@ void setup() {
 #ifdef DEBUG_MODE
 	Serial.println(" - I/O [OK]");
 #endif
+
+	// Configuration par défaut
+	heartTime = heartTimePrec = millis();
+	heart = false;
 }
 
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
@@ -146,6 +156,18 @@ void endMatch() {
 // ------------------------------------------------------- //
 // -------------------- BUSINESS METHODS ----------------- //
 // ------------------------------------------------------- //
+
+/*
+ * Méthode pour le battement de coeur
+ */
+void heartBeat() {
+	heartTime = millis();
+	if (heartTime - heartTimePrec > 1000) {
+		heartTimePrec = heartTime;
+		digitalWrite(LED_BUILTIN, (heart) ? HIGH : LOW);
+		heart = !heart;
+	}
+}
 
 /*
  * Méthode retournant l'information de présence d'un obstacle (adversaire ???)
