@@ -65,12 +65,18 @@ int main(void) {
 	Serial.println(" == DEBUT DU MATCH ==");
 #endif
 	startMatch = millis();
+	int t;
 	do {
 		heartBeat();
 		matchLoop();
 
 		// Gestion du temps
-	} while(millis() - startMatch <= TPS_MATCH);
+		t = millis();
+
+		if (t - startMatch >= PREPARE_GONFLAGE) {
+			digitalWrite(GONFLEUR, HIGH);
+		}
+	} while(t - startMatch <= TPS_MATCH);
 	robotManager.stop();
 
 #ifdef DEBUG_MODE
@@ -104,8 +110,8 @@ void setup() {
 	Serial.println(" - I2C [OK] (Master)");
 #endif
 
-	// Tempo attente pour boot autre carte
-	delay(2000);
+	// Tempo attente pour boot autres cartes
+	delay(4000);
 
 	// ------------- //
 	// Servo manager //
@@ -130,14 +136,31 @@ void setup() {
 	// -- //
 	// IO //
 	// -- //
-	pinMode(LED_BUILTIN, OUTPUT);
-	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, false); // FIXME : Dans la vraie vie ce sera true
+
+	// Inputs
+	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, false);
 	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN);
+	capteurs.setPinForCapteur(PROX1, PROX1_PIN);
+	capteurs.setPinForCapteur(PROX2, PROX2_PIN);
+	capteurs.setPinForCapteur(PROX3, PROX3_PIN);
+	capteurs.setPinForCapteur(PROX4, PROX4_PIN);
+	capteurs.setPinForCapteur(PROX5, PROX5_PIN);
+	capteurs.setPinForCapteur(PROX6, PROX6_PIN);
+	capteurs.setPinForCapteur(PROX7, PROX7_PIN);
+	capteurs.setPinForCapteur(PROX8, PROX8_PIN);
 #ifdef DEBUG_MODE
-	Serial.println(" - I/O [OK]");
+	Serial.println(" - Capteurs [OK]");
 #endif
 
-	// Configuration par défaut
+	// Outputs
+	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(GONFLEUR, OUTPUT);
+	pinMode(ELECTRO_VANNE, OUTPUT);
+#ifdef DEBUG_MODE
+	Serial.println(" - Outputs [OK]");
+#endif
+
+	// Configuration par défaut des variables
 	heartTime = heartTimePrec = millis();
 	heart = false;
 }
@@ -145,7 +168,7 @@ void setup() {
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
 void matchLoop() {
 	// Processing de l'asservissement.
-	robotManager.process();
+	//robotManager.process();
 }
 
 // Méthode appelé pour la fin du match.
@@ -153,7 +176,13 @@ void endMatch() {
 #ifdef DEBUG_MODE
 	Serial.println(" == GONFLAGE BALLONS ==");
 #endif
-	// TODO : Gonflage ballon
+
+	//digitalWrite(GONFLEUR, HIGH); /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
+	digitalWrite(ELECTRO_VANNE, HIGH);
+
+	delay(6000);
+	digitalWrite(GONFLEUR, LOW);
+	digitalWrite(ELECTRO_VANNE, LOW);
 }
 
 // ------------------------------------------------------- //
