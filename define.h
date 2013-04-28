@@ -12,8 +12,11 @@
 
 #define VERSION			1
 
-#define TPS_MATCH		89000 // 89 sec pour palier au pb de réaction du bonhomme
-#define START_GONFLAGE	92000 // 92 sec pour démarrer le gonflage des ballon
+#define DEBUG_MODE
+
+#define TPS_MATCH			89500 // 89,5 sec pour palier au pb de réaction du bonhomme
+#define START_GONFLAGE		90500 // 90,5 sec pour démarrer le gonflage des ballon
+#define	PREPARE_GONFLAGE	88000 // Au bout de 88 sec on allume le gonfleur pour faire montée la pression
 
 // --------------------------------- //
 // Configuration de l'asservissement //
@@ -58,28 +61,63 @@ POUR INFOS
 
 #define SERVO_BRAS_DROIT		1
 #define SERVO_BRAS_GAUCHE		2
-#define SERVO_RAMASSE_VERRE		3
+#define SERVO_PORTE_DROITE		3
+#define SERVO_PORTE_GAUCHE		5
 
-#define BRAS_DROIT_HOME			800
-#define BRAS_DROIT_CDX_HAUT		1200
-#define BRAS_DROIT_BOG_HAUT		1800
-#define BRAS_DROIT_BOG_BAS		1000
+#define BRAS_DROIT_HOME			1870
+#define BRAS_DROIT_CDX_HAUT		1040
+#define BRAS_DROIT_BOUG_HAUT	1500 // TBD
+#define BRAS_DROIT_BOUG_BAS		1500 // TBD
 
-#define BRAS_GAUCHE_HOME		800
-#define BRAS_GAUCHE_CDX_HAUT	1200
-#define BRAS_GAUCHE_BOG_HAUT	1800
-#define BRAS_GAUCHE_BOG_BAS		1000
+#define BRAS_GAUCHE_HOME		790
+#define BRAS_GAUCHE_CDX_HAUT	1620
+#define BRAS_GAUCHE_BOUG_HAUT	1500 // TBD
+#define BRAS_GAUCHE_BOUG_BAS	1500 // TBD
 
-#define RAMASSE_VERRE_CLOSE		1200
-#define RAMASSE_VERRE_OPEN		1800
+#define PORTE_DROITE_CLOSE		850
+#define PORTE_DROITE_OPEN		1860
+#define PORTE_DROITE_INTERM		1500
+
+#define PORTE_GAUCHE_CLOSE		1850
+#define PORTE_GAUCHE_OPEN		950
+#define PORTE_GAUCHE_INTERM		1310
 
 // --------------- //
 // IO des capteurs //
 // --------------- //
 
-#define EQUIPE_PIN		9
+// OUTPUTS
+#define ELECTRO_VANNE	48
+#define GONFLEUR		30
+
+// INPUTS
+#define EQUIPE_PIN		15
+
 #define TIRETTE			SWITCH_01
-#define TIRETTE_PIN		8
-// TODO : Autre capteurs
+#define TIRETTE_PIN		26
+
+#define PROX1			GP2D_03
+#define PROX1_PIN		24
+
+#define PROX2			GP2D_04
+#define PROX2_PIN		18
+
+#define PROX3			GP2D_05
+#define PROX3_PIN		14
+
+#define PROX4			GP2D_06
+#define PROX4_PIN		22
+
+#define PROX5			GP2D_07
+#define PROX5_PIN		17
+
+#define PROX6			GP2D_08
+#define PROX6_PIN		28
+
+#define PROX7			GP2D_09
+#define PROX7_PIN		19
+
+#define PROX8			GP2D_10
+#define PROX8_PIN		16
 
 #endif /* DEFINE_H_ */
