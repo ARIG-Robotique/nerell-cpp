@@ -91,33 +91,33 @@ POUR INFOS
 #define GONFLEUR		30
 
 // INPUTS
-#define EQUIPE_PIN		15
+#define EQUIPE_PIN		19
 
 #define TIRETTE			SWITCH_01
-#define TIRETTE_PIN		26
+#define TIRETTE_PIN		28
 
 #define PROX1			GP2D_03
-#define PROX1_PIN		24
+#define PROX1_PIN		16
 
 #define PROX2			GP2D_04
-#define PROX2_PIN		18
+#define PROX2_PIN		24
 
 #define PROX3			GP2D_05
 #define PROX3_PIN		14
 
 #define PROX4			GP2D_06
-#define PROX4_PIN		22
+#define PROX4_PIN		26
 
 #define PROX5			GP2D_07
-#define PROX5_PIN		17
+#define PROX5_PIN		18
 
 #define PROX6			GP2D_08
-#define PROX6_PIN		28
+#define PROX6_PIN		15
 
 #define PROX7			GP2D_09
-#define PROX7_PIN		19
+#define PROX7_PIN		17
 
 #define PROX8			GP2D_10
-#define PROX8_PIN		16
+#define PROX8_PIN		22
 
 #endif /* DEFINE_H_ */
