@@ -39,64 +39,6 @@ Board2007NoMux capteurs = Board2007NoMux();
 // ------------------------- MAIN ------------------------ //
 // ------------------------------------------------------- //
 
-// Point d'entrée du programme
-int main(void) {
-	// Initialisation du SDK Arduino. A réécrire si on veut customiser tout le bouzin.
-	init();
-
-	// Initialisation de l'application
-	setup();
-
-	// Procédure d'initialisation Robot (calage, tirette, etc).
-#ifdef DEBUG_MODE
-	Serial.println(" == INIT MATCH ==");
-	Serial.println(" - Attente tirette ....");
-#endif
-	while(capteurs.readCapteurValue(TIRETTE)) {
-		heartBeat();
-	}
-
-	int team = capteurs.readCapteurValue(EQUIPE);
-#ifdef DEBUG_MODE
-	Serial.print(" - Equipe : ");
-	if (team) {
-		Serial.println("ROUGE");
-	} else {
-		Serial.println("BLEU");
-	}
-#endif
-
-#ifdef DEBUG_MODE
-	Serial.println(" == DEBUT DU MATCH ==");
-#endif
-	startMatch = millis();
-	int t;
-	do {
-		heartBeat();
-		matchLoop();
-
-		// Gestion du temps
-		t = millis();
-
-		if (t - startMatch >= PREPARE_GONFLAGE) {
-			digitalWrite(GONFLEUR, HIGH);
-		}
-	} while(t - startMatch <= TPS_MATCH);
-	robotManager.stop();
-
-#ifdef DEBUG_MODE
-	Serial.println(" == FIN DU MATCH ==");
-#endif
-	// Attente du temps de démarrage de la fin du match
-	while(millis() - startMatch <= START_GONFLAGE);
-	endMatch();
-
-	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
-	while(true) {
-		heartBeat();
-	}
-}
-
 // Methode de configuration pour le fonctionnement du programme
 void setup() {
 	// ------------------------------------------------------------- //
@@ -168,12 +110,84 @@ void setup() {
 	// Configuration par défaut des variables
 	heartTime = heartTimePrec = millis();
 	heart = false;
+
+	brasHome();
+	closeDoors();
+	stopGonfleur();
+	closeVanne();
+}
+
+// Point d'entrée du programme
+int main(void) {
+	// Initialisation du SDK Arduino. A réécrire si on veut customiser tout le bouzin.
+	init();
+
+	// Initialisation de l'application
+	setup();
+
+	// Procédure d'initialisation Robot (calage, tirette, etc).
+#ifdef DEBUG_MODE
+	Serial.println(" == INIT MATCH ==");
+	Serial.println(" - Attente tirette ....");
+#endif
+	while(capteurs.readCapteurValue(TIRETTE)) {
+		heartBeat();
+	}
+
+	int team = capteurs.readCapteurValue(EQUIPE);
+#ifdef DEBUG_MODE
+	Serial.print(" - Equipe : ");
+	if (team) {
+		Serial.println("ROUGE");
+	} else {
+		Serial.println("BLEU");
+	}
+#endif
+
+#ifdef DEBUG_MODE
+	Serial.println(" == DEBUT DU MATCH ==");
+#endif
+	unsigned long startMatch = millis();
+	unsigned long t;
+
+	// Test avec une consigne linéaire.
+	RobotConsigne rc = RobotConsigne();
+	rc.setFrein(true);
+	rc.getPosition().setX(Conv.mmToPulse(100));
+	robotManager.setConsigneTable(rc);
+
+	boolean g = false;
+	do {
+		heartBeat();
+		matchLoop();
+
+		// Gestion du temps
+		t = millis();
+
+		if (t - startMatch >= PREPARE_GONFLAGE && !g) {
+			startGonfleur();
+			g = true;
+		}
+	} while(t - startMatch <= TPS_MATCH);
+	robotManager.stop();
+
+#ifdef DEBUG_MODE
+	Serial.println(" == FIN DU MATCH ==");
+#endif
+	// Attente du temps de démarrage de la fin du match
+	while(millis() - startMatch <= START_GONFLAGE);
+	endMatch();
+
+	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
+	while(true) {
+		heartBeat();
+	}
 }
 
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
 void matchLoop() {
 	// Processing de l'asservissement.
-	//robotManager.process();
+	robotManager.process();
 }
 
 // Méthode appelé pour la fin du match.
