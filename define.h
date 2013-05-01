@@ -59,6 +59,9 @@ POUR INFOS
 // Configuration des servo moteurs //
 // ------------------------------- //
 
+#define SPEED_BRAS				10
+#define SPEED_PORTE				5
+
 #define SERVO_BRAS_DROIT		1
 #define SERVO_BRAS_GAUCHE		2
 #define SERVO_PORTE_DROITE		3
