@@ -138,8 +138,8 @@ void setup() {
 	// -- //
 
 	// Inputs
-	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, false);
-	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN);
+	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, true);
+	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN, true);
 	capteurs.setPinForCapteur(PROX1, PROX1_PIN);
 	capteurs.setPinForCapteur(PROX2, PROX2_PIN);
 	capteurs.setPinForCapteur(PROX3, PROX3_PIN);
