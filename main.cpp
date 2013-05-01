@@ -8,14 +8,19 @@
 
 #include "define.h"
 
-// variable globales
-unsigned long startMatch;
-
-// Prototype des fonctions
+// Prototype des fonctions principale
 void setup();
 void matchLoop();
 void endMatch();
+
+// Prototype des fonctions business
 void heartBeat();
+void brasHome();
+void closeDoors();
+void openVanne();
+void closeVanne();
+void startGonfleur();
+void stopGonfleur();
 
 // Heartbeat variables
 int heartTimePrec;
@@ -177,12 +182,12 @@ void endMatch() {
 	Serial.println(" == GONFLAGE BALLONS ==");
 #endif
 
-	//digitalWrite(GONFLEUR, HIGH); /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
-	digitalWrite(ELECTRO_VANNE, HIGH);
+	startGonfleur();
+	openVanne();
 
 	delay(6000);
-	digitalWrite(GONFLEUR, LOW);
-	digitalWrite(ELECTRO_VANNE, LOW);
+	stopGonfleur();
+	closeVanne();
 }
 
 // ------------------------------------------------------- //
@@ -199,6 +204,69 @@ void heartBeat() {
 		digitalWrite(LED_BUILTIN, (heart) ? HIGH : LOW);
 		heart = !heart;
 	}
+}
+
+/*
+ * Méthode pour placer les bras à la maison
+ */
+void brasHome() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Les bras a la maison");
+#endif
+	servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_HOME);
+	servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_HOME);
+}
+
+/*
+ * Méthode pour fermer les portes
+ */
+void closeDoors() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Fermeture des portes");
+#endif
+	servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_CLOSE);
+	servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_CLOSE);
+}
+
+/*
+ * Ouverture de l'electrovanne
+ */
+void openVanne() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Ouverture de l'electro vanne");
+#endif
+	digitalWrite(ELECTRO_VANNE, HIGH);
+}
+
+/*
+ * Fermeture de la vanne
+ */
+void closeVanne() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Fermeture electro-vanne");
+#endif
+	digitalWrite(ELECTRO_VANNE, LOW);
+}
+
+/*
+ * Allumage du gonfleur
+ */
+void startGonfleur() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Allumage du gonfleur");
+#endif
+	// /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
+	//digitalWrite(GONFLEUR, HIGH);
+}
+
+/*
+ * Arret du gonfleur
+ */
+void stopGonfleur() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Stop gonfleur");
+#endif
+	digitalWrite(GONFLEUR, LOW);
 }
 
 /*
