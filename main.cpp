@@ -134,6 +134,13 @@ int main(void) {
 		heartBeat();
 	}
 
+	// Démarrage du comptage
+	unsigned long startMatch = millis();
+	unsigned long t;
+
+	// Reset des valeurs codeurs lors des différents mouvements de positionnement
+	robotManager.resetEncodeurs();
+
 	int team = capteurs.readCapteurValue(EQUIPE);
 #ifdef DEBUG_MODE
 	Serial.print(" - Equipe : ");
@@ -147,15 +154,8 @@ int main(void) {
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
 #endif
-	unsigned long startMatch = millis();
-	unsigned long t;
 
 	// Test avec une consigne linéaire.
-	RobotConsigne rc = RobotConsigne();
-	rc.setFrein(true);
-	rc.getPosition().setX(Conv.mmToPulse(100));
-	robotManager.setConsigneTable(rc);
-
 	boolean g = false;
 	do {
 		heartBeat();
