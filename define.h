@@ -48,11 +48,11 @@ POUR INFOS
 // -------------- //
 
 #define K_P_DISTANCE   		1.00
-#define K_I_DISTANCE   		0.10
+#define K_I_DISTANCE   		0.00
 #define K_D_DISTANCE   		0.00
 
 #define K_P_ORIENTATION		1.00
-#define K_I_ORIENTATION		0.10
+#define K_I_ORIENTATION		0.00
 #define K_D_ORIENTATION		0.00
 
 // ------------------------------- //
