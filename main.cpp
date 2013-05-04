@@ -11,6 +11,7 @@
 // Prototype des fonctions principale
 void setup();
 void matchLoop();
+void startFunnyAction();
 void endMatch();
 
 // Prototype des fonctions business
@@ -133,7 +134,7 @@ int main(void) {
 	while(capteurs.readCapteurValue(TIRETTE)) {
 		heartBeat();
 		if (Serial.available()) {
-			if (Serial.read() == 's') {
+			if (Serial.read() == 's') { // La touche s de la liaison série est égal à la tirette
 				break;
 			}
 		}
@@ -181,6 +182,8 @@ int main(void) {
 #endif
 	// Attente du temps de démarrage de la fin du match
 	while(millis() - startMatch <= START_GONFLAGE);
+	startFunnyAction();
+	while(millis() - startMatch <= END_TOUT);
 	endMatch();
 
 	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
@@ -200,15 +203,18 @@ void matchLoop() {
 // ----------------------------------- //
 // Méthode appelé pour la fin du match //
 // ----------------------------------- //
-void endMatch() {
+void startFunnyAction() {
 #ifdef DEBUG_MODE
-	Serial.println(" == GONFLAGE BALLONS ==");
+	Serial.println(" == START FUNNY ACTION ==");
 #endif
-
 	startGonfleur();
 	openVanne();
+}
 
-	delay(6000);
+void endMatch() {
+#ifdef DEBUG_MODE
+	Serial.println(" == FIN FUNNY ACTION ==");
+#endif
 	stopGonfleur();
 	closeVanne();
 }
