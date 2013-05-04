@@ -132,6 +132,11 @@ int main(void) {
 #endif
 	while(capteurs.readCapteurValue(TIRETTE)) {
 		heartBeat();
+		if (Serial.available()) {
+			if (Serial.read() == 's') {
+				break;
+			}
+		}
 	}
 
 	// Démarrage du comptage
@@ -184,13 +189,17 @@ int main(void) {
 	}
 }
 
-// Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
+// ---------------------------------------------------------------------------- //
+// Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé //
+// ---------------------------------------------------------------------------- //
 void matchLoop() {
 	// Processing de l'asservissement.
 	robotManager.process();
 }
 
-// Méthode appelé pour la fin du match.
+// ----------------------------------- //
+// Méthode appelé pour la fin du match //
+// ----------------------------------- //
 void endMatch() {
 #ifdef DEBUG_MODE
 	Serial.println(" == GONFLAGE BALLONS ==");
