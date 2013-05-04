@@ -14,16 +14,16 @@
 
 #define DEBUG_MODE
 
-#define TPS_MATCH			20500 // 89,5 sec pour palier au pb de réaction du bonhomme
-#define START_GONFLAGE		21500 // 90,5 sec pour démarrer le gonflage des ballon
-#define	PREPARE_GONFLAGE	22000 // Au bout de 88 sec on allume le gonfleur pour faire montée la pression
+#define TPS_MATCH			89500 // 89,5 sec pour palier au pb de réaction du bonhomme
+#define START_GONFLAGE		90500 // 90,5 sec pour démarrer le gonflage des ballon
+#define	PREPARE_GONFLAGE	90000 // Au bout de 88 sec on allume le gonfleur pour faire montée la pression
 
 // --------------------------------- //
 // Configuration de l'asservissement //
 // --------------------------------- //
 
 //#define CYCLE_ASSERV				78			// Asserv 128 us * 78 = 9,984 ms
-//#define TIME_ASSERV					0.009984	// En s
+//#define TIME_ASSERV				0.009984	// En s
 #define TIME_ASSERV_MS				10
 
 /*
