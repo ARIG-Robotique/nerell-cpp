@@ -38,11 +38,11 @@ POUR INFOS
 #define ENTRAXE_PULSE				651.084		// Entraxe en pulse
 */
 
-#define RAMPE_ACC_DISTANCE			500.0 		// en mm/s2
-#define RAMPE_DEC_DISTANCE			500.0 		// en mm/s2
+#define RAMPE_ACC_DISTANCE			100.0 		// en mm/s2
+#define RAMPE_DEC_DISTANCE			100.0 		// en mm/s2
 
-#define RAMPE_ACC_ORIENTATION		500.0 		// en mm/s2
-#define RAMPE_DEC_ORIENTATION		500.0 		// en mm/s2
+#define RAMPE_ACC_ORIENTATION		100.0 		// en mm/s2
+#define RAMPE_DEC_ORIENTATION		100.0 		// en mm/s2
 
 // -------------- //
 // Parametres PID //
