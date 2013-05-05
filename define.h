@@ -17,7 +17,7 @@
 #define TPS_MATCH			30000 // 89,5 sec pour palier au pb de réaction du bonhomme
 #define START_GONFLAGE		30000 // 90,5 sec pour démarrer le gonflage des ballon
 #define	PREPARE_GONFLAGE	88000 // Au bout de 88 sec on allume le gonfleur pour faire montée la pression
-#define END_TOUT			30000 // 100 sec c'est vraiment la fin de tout
+#define END_TOUT			35000 // 100 sec c'est vraiment la fin de tout
 
 // --------------------------------- //
 // Configuration de l'asservissement //

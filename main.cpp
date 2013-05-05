@@ -189,6 +189,8 @@ int main(void) {
 	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
 	while(true) {
 		heartBeat();
+
+		// TODO : Lors du réangement de la tirette refermé les servos.
 	}
 }
 
@@ -198,6 +200,8 @@ int main(void) {
 void matchLoop() {
 	// Processing de l'asservissement.
 	robotManager.process();
+
+	// TODO : Logique d'homolo, etc...
 }
 
 // ----------------------------------- //
