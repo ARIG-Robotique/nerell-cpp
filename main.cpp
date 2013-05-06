@@ -23,6 +23,7 @@ void openVanne();
 void closeVanne();
 void startGonfleur();
 void stopGonfleur();
+boolean hasObstacle();
 
 // Heartbeat variables
 int heartTimePrec;
@@ -101,6 +102,8 @@ void setup() {
 	robotManager.setPIDOrientation(kpOrientation, kiOrientation, kdOrientation);
 	robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
 	robotManager.setRampDec(rampDecDistance, rampDecOrientation);
+	robotManager.setHasObstacle(hasObstacle);
+
 #ifdef DEBUG_MODE
 	Serial.println(" - Robot manager [OK]");
 #endif
@@ -434,5 +437,7 @@ void stopGonfleur() {
  */
 boolean hasObstacle() {
 	// TODO : Liste de capteurs indiquant que le robot est face à un autre.
-	return false;
+
+	return capteurs.readCapteurValue(AVANT_DROIT) || capteurs.readCapteurValue(AVANT_GAUCHE) ;
+
 }
