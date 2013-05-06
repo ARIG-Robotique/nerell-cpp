@@ -13,6 +13,7 @@ void setup();
 void matchLoop();
 void startFunnyAction();
 void endMatch();
+void nextEtape();
 
 // Prototype des fonctions business
 void heartBeat();
@@ -35,6 +36,9 @@ Convertion Conv = Convertion(4.18828797610251, 11.2573099415205);
 RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
 Board2007NoMux capteurs = Board2007NoMux();
+
+//Gestion des étapes
+int gestEtapes;
 
 // ------------------------ //
 // Configuration des rampes //
@@ -136,6 +140,11 @@ void setup() {
 	closeDoors();
 	stopGonfleur();
 	closeVanne();
+
+	// Ini Gestion Etapes
+
+	gestEtapes = 0;
+
 }
 
 // Point d'entrée du programme
@@ -219,55 +228,108 @@ int main(void) {
 // ---------------------------------------------------------------------------- //
 void matchLoop() {
 
-	// TODO : A supprimer pour les test de déplacement au clavier
-	if (Serial.available()) {
-		char v = Serial.read();
-		RobotConsigne rc = RobotConsigne();
-		rc.setType(CONSIGNE_POLAIRE);
-		ConsignePolaire p = ConsignePolaire();
-		p.enableFrein();
-		p.setVitesseDistance(200);
-		p.setVitesseOrientation(200);
 
-		switch (v) {
-		case 'a' :
-			Serial.println("AVANCE");
-			p.setConsigneDistance(Conv.mmToPulse(1000));
-			p.setConsigneOrientation(0);
-			break;
-		case 'z' :
-			Serial.println("RECULE");
-			p.setConsigneDistance(-Conv.mmToPulse(1000));
-			p.setConsigneOrientation(0);
-			break;
-		case 'g':
-			Serial.println("TOURNE A GAUCHE");
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(Conv.degToPulse(90));
-			break;
-		case 'd':
-			Serial.println("TOURNE A DROITE");
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(-Conv.degToPulse(90));
-			break;
-		case 't':
-			Serial.println("TOURS COMPLET A DROITE");
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(-Conv.degToPulse(360));
-			break;
-		case 'y':
-			Serial.println("TOURS COMPLET A GAUCHE");
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(Conv.degToPulse(360));
-			break;
-		}
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
+
+
+	if(robotManager.getTrajetAtteint())
+	{
+
+		nextEtape();
+
+
 	}
 
 	// Processing de l'asservissement.
 	robotManager.process();
 }
+
+void nextEtape(){
+
+	RobotConsigne rc = RobotConsigne();
+	rc.setType(CONSIGNE_POLAIRE);
+	ConsignePolaire p = ConsignePolaire();
+	p.enableFrein();
+	p.setVitesseDistance(200);
+	p.setVitesseOrientation(200);
+    Serial.print(" Etapes : ");
+	Serial.println(gestEtapes,DEC);
+	switch (gestEtapes) {
+	case 0 :
+			p.setConsigneDistance(Conv.mmToPulse(100));
+			p.setConsigneOrientation(Conv.degToPulse(45));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 1 :
+		    p.setConsigneDistance(Conv.mmToPulse(900));
+			p.setConsigneOrientation(-Conv.degToPulse(90));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes += 2;
+			servoManager.setPosition(SERVO_PORTE_DROITE,PORTE_DROITE_OPEN);
+			servoManager.setPosition(SERVO_PORTE_GAUCHE,PORTE_GAUCHE_OPEN);
+			break;
+	case 2 :
+		    p.setConsigneDistance(Conv.mmToPulse(800));
+			p.setConsigneOrientation(0);
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+
+
+			gestEtapes++;
+			break;
+	case 3 :
+			p.setConsigneDistance(Conv.mmToPulse(300));
+			p.setConsigneOrientation(-Conv.degToPulse(90));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes+=2;
+			break;
+	case 4 :
+			p.setConsigneDistance(Conv.mmToPulse(150));
+			p.setConsigneOrientation(0);
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 5 :
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(Conv.degToPulse(90));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 6 :
+			p.setConsigneDistance(Conv.mmToPulse(100));
+			p.setConsigneOrientation(Conv.degToPulse(90));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 7 :
+			p.setConsigneDistance(Conv.mmToPulse(1000));
+			p.setConsigneOrientation(Conv.degToPulse(90));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 8 :
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(Conv.degToPulse(360));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 9 :
+			servoManager.setPosition(SERVO_BRAS_DROIT,BRAS_DROIT_CDX_HAUT);
+			gestEtapes++;
+			break;
+
+	}
+
+}
+
 
 // ----------------------------------- //
 // Méthode appelé pour la fin du match //
