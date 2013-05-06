@@ -27,9 +27,6 @@
 //#define TIME_ASSERV				0.009984	// En s
 #define TIME_ASSERV_MS				10
 
-#define COUNT_PER_MM				4.18828797610251
-#define COUNT_PER_DEG				11.2573099415205
-
 /*
 POUR INFOS
 #define RESOLUTION_CODEUR			512
@@ -40,24 +37,6 @@ POUR INFOS
 #define ENTRAXE						161			// Entraxe des roue codeuse en mm
 #define ENTRAXE_PULSE				651.084		// Entraxe en pulse
 */
-
-#define RAMPE_ACC_DISTANCE			100.0 		// en mm/s2
-#define RAMPE_DEC_DISTANCE			100.0 		// en mm/s2
-
-#define RAMPE_ACC_ORIENTATION		100.0 		// en mm/s2
-#define RAMPE_DEC_ORIENTATION		100.0 		// en mm/s2
-
-// -------------- //
-// Parametres PID //
-// -------------- //
-
-#define K_P_DISTANCE   		1.10
-#define K_I_DISTANCE   		0.80
-#define K_D_DISTANCE   		0.00
-
-#define K_P_ORIENTATION		1.20
-#define K_I_ORIENTATION		0.80
-#define K_D_ORIENTATION		0.00
 
 // ------------------------------- //
 // Configuration des servo moteurs //

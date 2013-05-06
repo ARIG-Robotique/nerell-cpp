@@ -29,12 +29,32 @@ int heartTime;
 boolean heart;
 
 // Classe de convertion
-Convertion Conv = Convertion(COUNT_PER_MM, COUNT_PER_MM);
+Convertion Conv = Convertion(4.18828797610251, 11.2573099415205);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
 Board2007NoMux capteurs = Board2007NoMux();
+
+// ------------------------ //
+// Configuration des rampes //
+// ------------------------ //
+const int rampAccDistance = 100.0; // en mm/s2
+const int rampDecDistance = 100.0; // en mm/s2
+
+const double rampAccOrientation = 100.0; // en mm/s2
+const double rampDecOrientation = 100.0; // en mm/s2
+
+// -------------- //
+// Parametres PID //
+// -------------- //
+const double kpDistance = 1.10;
+const double kiDistance = 0.80;
+const double kdDistance = 0.00;
+
+const double kpOrientation = 1.20;
+const double kiOrientation = 0.80;
+const double kdOrientation = 0.00;
 
 // ------------------------------------------------------- //
 // ------------------------- MAIN ------------------------ //
@@ -73,10 +93,10 @@ void setup() {
 	// ------------- //
 	robotManager.init();
 	robotManager.setSampleTime(TIME_ASSERV_MS);
-	robotManager.setPIDDistance(K_P_DISTANCE, K_I_DISTANCE, K_D_DISTANCE);
-	robotManager.setPIDOrientation(K_P_ORIENTATION, K_I_ORIENTATION, K_D_ORIENTATION);
-	robotManager.setRampAcc(RAMPE_ACC_DISTANCE, RAMPE_ACC_ORIENTATION);
-	robotManager.setRampDec(RAMPE_DEC_DISTANCE, RAMPE_DEC_ORIENTATION);
+	robotManager.setPIDDistance(kpDistance, kiDistance, kdDistance);
+	robotManager.setPIDOrientation(kpOrientation, kiOrientation, kdOrientation);
+	robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
+	robotManager.setRampDec(rampDecDistance, rampDecOrientation);
 #ifdef DEBUG_MODE
 	Serial.println(" - Robot manager [OK]");
 #endif
