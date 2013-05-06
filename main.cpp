@@ -29,7 +29,7 @@ int heartTime;
 boolean heart;
 
 // Classe de convertion
-Convertion Conv = Convertion(4.044, 11.36);
+Convertion Conv = Convertion(4.18828797610251, 11.6959064327485);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
