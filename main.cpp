@@ -218,6 +218,53 @@ int main(void) {
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé //
 // ---------------------------------------------------------------------------- //
 void matchLoop() {
+
+	// TODO : A supprimer pour les test de déplacement au clavier
+	if (Serial.available()) {
+		char v = Serial.read();
+		RobotConsigne rc = RobotConsigne();
+		rc.setType(CONSIGNE_POLAIRE);
+		ConsignePolaire p = ConsignePolaire();
+		p.enableFrein();
+		p.setVitesseDistance(200);
+		p.setVitesseOrientation(200);
+
+		switch (v) {
+		case 'a' :
+			Serial.println("AVANCE");
+			p.setConsigneDistance(Conv.mmToPulse(1000));
+			p.setConsigneOrientation(0);
+			break;
+		case 'z' :
+			Serial.println("RECULE");
+			p.setConsigneDistance(-Conv.mmToPulse(1000));
+			p.setConsigneOrientation(0);
+			break;
+		case 'g':
+			Serial.println("TOURNE A GAUCHE");
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(Conv.degToPulse(90));
+			break;
+		case 'd':
+			Serial.println("TOURNE A DROITE");
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(-Conv.degToPulse(90));
+			break;
+		case 't':
+			Serial.println("TOURS COMPLET A DROITE");
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(-Conv.degToPulse(360));
+			break;
+		case 'y':
+			Serial.println("TOURS COMPLET A GAUCHE");
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(Conv.degToPulse(360));
+			break;
+		}
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+	}
+
 	// Processing de l'asservissement.
 	robotManager.process();
 }
