@@ -29,7 +29,7 @@ int heartTime;
 boolean heart;
 
 // Classe de convertion
-Convertion Conv = Convertion(4.18828797610251, 11.6959064327485);
+Convertion Conv = Convertion(COUNT_PER_MM, COUNT_PER_MM);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
@@ -200,8 +200,6 @@ int main(void) {
 void matchLoop() {
 	// Processing de l'asservissement.
 	robotManager.process();
-
-	// TODO : Logique d'homolo, etc...
 }
 
 // ----------------------------------- //
