@@ -108,14 +108,14 @@ void setup() {
 	// Inputs
 	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, true);
 	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN, true);
-	capteurs.setPinForCapteur(PROX1, PROX1_PIN);
-	capteurs.setPinForCapteur(PROX2, PROX2_PIN);
-	capteurs.setPinForCapteur(PROX3, PROX3_PIN);
-	capteurs.setPinForCapteur(PROX4, PROX4_PIN);
-	capteurs.setPinForCapteur(PROX5, PROX5_PIN);
-	capteurs.setPinForCapteur(PROX6, PROX6_PIN);
-	capteurs.setPinForCapteur(PROX7, PROX7_PIN);
-	capteurs.setPinForCapteur(PROX8, PROX8_PIN);
+	capteurs.setPinForCapteur(LATERAL_ARRIERE_DROIT, LATERAL_ARRIERE_DROIT_PIN);
+	capteurs.setPinForCapteur(LATERAL_ARRIERE_GAUCHE, LATERAL_ARRIERE_GAUCHE_PIN);
+	capteurs.setPinForCapteur(LATERAL_AVANT_DROIT, LATERAL_AVANT_DROIT_PIN);
+	capteurs.setPinForCapteur(LATERAL_AVANT_GAUCHE, LATERAL_AVANT_GAUCHE_PIN);
+	capteurs.setPinForCapteur(ARRIERE_DROIT, ARRIERE_DROIT_PIN);
+	capteurs.setPinForCapteur(ARRIERE_GAUCHE, ARRIERE_GAUCHE_PIN);
+	capteurs.setPinForCapteur(AVANT_DROIT, AVANT_DROIT_PIN);
+	capteurs.setPinForCapteur(AVANT_GAUCHE, AVANT_GAUCHE_PIN);
 #ifdef DEBUG_MODE
 	Serial.println(" - Capteurs [OK]");
 #endif
