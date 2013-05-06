@@ -8,14 +8,20 @@
 
 #include "define.h"
 
-// variable globales
-unsigned long startMatch;
-
-// Prototype des fonctions
+// Prototype des fonctions principale
 void setup();
 void matchLoop();
+void startFunnyAction();
 void endMatch();
+
+// Prototype des fonctions business
 void heartBeat();
+void brasHome();
+void closeDoors();
+void openVanne();
+void closeVanne();
+void startGonfleur();
+void stopGonfleur();
 
 // Heartbeat variables
 int heartTimePrec;
@@ -23,7 +29,7 @@ int heartTime;
 boolean heart;
 
 // Classe de convertion
-Convertion Conv = Convertion(4.044, 11.36);
+Convertion Conv = Convertion(4.18828797610251, 11.6959064327485);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
@@ -33,64 +39,6 @@ Board2007NoMux capteurs = Board2007NoMux();
 // ------------------------------------------------------- //
 // ------------------------- MAIN ------------------------ //
 // ------------------------------------------------------- //
-
-// Point d'entrée du programme
-int main(void) {
-	// Initialisation du SDK Arduino. A réécrire si on veut customiser tout le bouzin.
-	init();
-
-	// Initialisation de l'application
-	setup();
-
-	// Procédure d'initialisation Robot (calage, tirette, etc).
-#ifdef DEBUG_MODE
-	Serial.println(" == INIT MATCH ==");
-	Serial.println(" - Attente tirette ....");
-#endif
-	while(capteurs.readCapteurValue(TIRETTE)) {
-		heartBeat();
-	}
-
-	int team = capteurs.readCapteurValue(EQUIPE);
-#ifdef DEBUG_MODE
-	Serial.print(" - Equipe : ");
-	if (team) {
-		Serial.println("ROUGE");
-	} else {
-		Serial.println("BLEU");
-	}
-#endif
-
-#ifdef DEBUG_MODE
-	Serial.println(" == DEBUT DU MATCH ==");
-#endif
-	startMatch = millis();
-	int t;
-	do {
-		heartBeat();
-		matchLoop();
-
-		// Gestion du temps
-		t = millis();
-
-		if (t - startMatch >= PREPARE_GONFLAGE) {
-			digitalWrite(GONFLEUR, HIGH);
-		}
-	} while(t - startMatch <= TPS_MATCH);
-	robotManager.stop();
-
-#ifdef DEBUG_MODE
-	Serial.println(" == FIN DU MATCH ==");
-#endif
-	// Attente du temps de démarrage de la fin du match
-	while(millis() - startMatch <= START_GONFLAGE);
-	endMatch();
-
-	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
-	while(true) {
-		heartBeat();
-	}
-}
 
 // Methode de configuration pour le fonctionnement du programme
 void setup() {
@@ -138,8 +86,8 @@ void setup() {
 	// -- //
 
 	// Inputs
-	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, false);
-	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN);
+	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, true);
+	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN, true);
 	capteurs.setPinForCapteur(PROX1, PROX1_PIN);
 	capteurs.setPinForCapteur(PROX2, PROX2_PIN);
 	capteurs.setPinForCapteur(PROX3, PROX3_PIN);
@@ -163,26 +111,116 @@ void setup() {
 	// Configuration par défaut des variables
 	heartTime = heartTimePrec = millis();
 	heart = false;
+
+	brasHome();
+	closeDoors();
+	stopGonfleur();
+	closeVanne();
 }
 
-// Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé.
-void matchLoop() {
-	// Processing de l'asservissement.
-	//robotManager.process();
-}
+// Point d'entrée du programme
+int main(void) {
+	// Initialisation du SDK Arduino. A réécrire si on veut customiser tout le bouzin.
+	init();
 
-// Méthode appelé pour la fin du match.
-void endMatch() {
+	// Initialisation de l'application
+	setup();
+
+	// Procédure d'initialisation Robot (calage, tirette, etc).
 #ifdef DEBUG_MODE
-	Serial.println(" == GONFLAGE BALLONS ==");
+	Serial.println(" == INIT MATCH ==");
+	Serial.println(" - Attente tirette ....");
+#endif
+	while(capteurs.readCapteurValue(TIRETTE)) {
+		heartBeat();
+		if (Serial.available()) {
+			if (Serial.read() == 's') { // La touche s de la liaison série est égal à la tirette
+				break;
+			}
+		}
+	}
+
+	// Démarrage du comptage
+	unsigned long startMatch = millis();
+	unsigned long t;
+
+	// Reset des valeurs codeurs lors des différents mouvements de positionnement
+	robotManager.resetEncodeurs();
+
+	int team = capteurs.readCapteurValue(EQUIPE);
+#ifdef DEBUG_MODE
+	Serial.print(" - Equipe : ");
+	if (team) {
+		Serial.println("ROUGE");
+	} else {
+		Serial.println("BLEU");
+	}
 #endif
 
-	//digitalWrite(GONFLEUR, HIGH); /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
-	digitalWrite(ELECTRO_VANNE, HIGH);
+#ifdef DEBUG_MODE
+	Serial.println(" == DEBUT DU MATCH ==");
+#endif
 
-	delay(6000);
-	digitalWrite(GONFLEUR, LOW);
-	digitalWrite(ELECTRO_VANNE, LOW);
+	// Test avec une consigne linéaire.
+	boolean g = false;
+	do {
+		heartBeat();
+		matchLoop();
+
+		// Gestion du temps
+		t = millis();
+
+		if (t - startMatch >= PREPARE_GONFLAGE && !g) {
+			startGonfleur();
+			g = true;
+		}
+	} while(t - startMatch <= TPS_MATCH);
+	robotManager.stop();
+
+#ifdef DEBUG_MODE
+	Serial.println(" == FIN DU MATCH ==");
+#endif
+	// Attente du temps de démarrage de la fin du match
+	while(millis() - startMatch <= START_GONFLAGE);
+	startFunnyAction();
+	while(millis() - startMatch <= END_TOUT);
+	endMatch();
+
+	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
+	while(true) {
+		heartBeat();
+
+		// TODO : Lors du réangement de la tirette refermé les servos.
+	}
+}
+
+// ---------------------------------------------------------------------------- //
+// Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé //
+// ---------------------------------------------------------------------------- //
+void matchLoop() {
+	// Processing de l'asservissement.
+	robotManager.process();
+
+	// TODO : Logique d'homolo, etc...
+}
+
+// ----------------------------------- //
+// Méthode appelé pour la fin du match //
+// ----------------------------------- //
+void startFunnyAction() {
+#ifdef DEBUG_MODE
+	Serial.println(" == START FUNNY ACTION ==");
+#endif
+	startGonfleur();
+	openVanne();
+}
+
+void endMatch() {
+#ifdef DEBUG_MODE
+	Serial.println(" == FIN FUNNY ACTION ==");
+#endif
+	stopGonfleur();
+	closeVanne();
 }
 
 // ------------------------------------------------------- //
@@ -199,6 +237,69 @@ void heartBeat() {
 		digitalWrite(LED_BUILTIN, (heart) ? HIGH : LOW);
 		heart = !heart;
 	}
+}
+
+/*
+ * Méthode pour placer les bras à la maison
+ */
+void brasHome() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Les bras a la maison");
+#endif
+	servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_HOME);
+	servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_HOME);
+}
+
+/*
+ * Méthode pour fermer les portes
+ */
+void closeDoors() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Fermeture des portes");
+#endif
+	servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_CLOSE);
+	servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_CLOSE);
+}
+
+/*
+ * Ouverture de l'electrovanne
+ */
+void openVanne() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Ouverture de l'electro vanne");
+#endif
+	digitalWrite(ELECTRO_VANNE, HIGH);
+}
+
+/*
+ * Fermeture de la vanne
+ */
+void closeVanne() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Fermeture electro-vanne");
+#endif
+	digitalWrite(ELECTRO_VANNE, LOW);
+}
+
+/*
+ * Allumage du gonfleur
+ */
+void startGonfleur() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Allumage du gonfleur");
+#endif
+	// /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
+	//digitalWrite(GONFLEUR, HIGH);
+}
+
+/*
+ * Arret du gonfleur
+ */
+void stopGonfleur() {
+#ifdef DEBUG_MODE
+	Serial.println(" * Stop gonfleur");
+#endif
+	digitalWrite(GONFLEUR, LOW);
 }
 
 /*
