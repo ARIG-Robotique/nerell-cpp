@@ -207,10 +207,18 @@ int main(void) {
 	endMatch();
 
 	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
+	boolean x = true;
 	while(true) {
 		heartBeat();
 
-		// TODO : Lors du réangement de la tirette refermé les servos.
+		if (x && capteurs.readCapteurValue(TIRETTE)) {
+#ifdef DEBUG_MODE
+			Serial.println(" == C'EST FINI ==");
+#endif
+			x = false;
+			closeDoors();
+			brasHome();
+		}
 	}
 }
 
