@@ -252,13 +252,13 @@ void nextEtape(){
 	rc.setType(CONSIGNE_POLAIRE);
 	ConsignePolaire p = ConsignePolaire();
 	p.enableFrein();
-	p.setVitesseDistance(200);
-	p.setVitesseOrientation(200);
+	p.setVitesseDistance(300);
+	p.setVitesseOrientation(300);
     Serial.print(" Etapes : ");
 	Serial.println(gestEtapes,DEC);
 	switch (gestEtapes) {
 	case 0 :
-			p.setConsigneDistance(Conv.mmToPulse(100));
+			p.setConsigneDistance(Conv.mmToPulse(200));
 			p.setConsigneOrientation(Conv.degToPulse(45));
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
@@ -273,29 +273,27 @@ void nextEtape(){
 			servoManager.setPosition(SERVO_PORTE_DROITE,PORTE_DROITE_OPEN);
 			servoManager.setPosition(SERVO_PORTE_GAUCHE,PORTE_GAUCHE_OPEN);
 			break;
-	case 2 :
+	/*case 2 :
 		    p.setConsigneDistance(Conv.mmToPulse(800));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
-
-
 			gestEtapes++;
-			break;
+			break;*/
 	case 3 :
-			p.setConsigneDistance(Conv.mmToPulse(300));
+			p.setConsigneDistance(Conv.mmToPulse(500));
 			p.setConsigneOrientation(-Conv.degToPulse(90));
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes+=2;
 			break;
-	case 4 :
+	/*case 4 :
 			p.setConsigneDistance(Conv.mmToPulse(150));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
-			break;
+			break;*/
 	case 5 :
 			p.setConsigneDistance(0);
 			p.setConsigneOrientation(Conv.degToPulse(90));
@@ -304,28 +302,38 @@ void nextEtape(){
 			gestEtapes++;
 			break;
 	case 6 :
-			p.setConsigneDistance(Conv.mmToPulse(100));
-			p.setConsigneOrientation(Conv.degToPulse(90));
+			p.setConsigneDistance(Conv.mmToPulse(1000));
+			p.setConsigneOrientation(Conv.degToPulse(180));
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
 	case 7 :
-			p.setConsigneDistance(Conv.mmToPulse(1000));
-			p.setConsigneOrientation(Conv.degToPulse(90));
+			p.setConsigneDistance(-Conv.mmToPulse(100));
+			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
 	case 8 :
+			p.setConsigneDistance(Conv.mmToPulse(1000));
+			p.setConsigneOrientation(-Conv.degToPulse(180));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
+	case 9 :
 			p.setConsigneDistance(0);
 			p.setConsigneOrientation(Conv.degToPulse(360));
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
-	case 9 :
+	case 10 :
 			servoManager.setPosition(SERVO_BRAS_DROIT,BRAS_DROIT_CDX_HAUT);
+			servoManager.setPosition(SERVO_BRAS_GAUCHE,BRAS_GAUCHE_CDX_HAUT);
+			servoManager.setPosition(SERVO_PORTE_DROITE,PORTE_DROITE_CLOSE);
+			servoManager.setPosition(SERVO_PORTE_GAUCHE,PORTE_GAUCHE_CLOSE);
 			gestEtapes++;
 			break;
 
@@ -437,7 +445,6 @@ void stopGonfleur() {
  */
 boolean hasObstacle() {
 	// TODO : Liste de capteurs indiquant que le robot est face à un autre.
-
 	return capteurs.readCapteurValue(AVANT_DROIT) || capteurs.readCapteurValue(AVANT_GAUCHE) ;
 
 }
