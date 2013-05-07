@@ -230,16 +230,8 @@ int main(void) {
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé //
 // ---------------------------------------------------------------------------- //
 void matchLoop() {
-
-
-
-
-	if(robotManager.getTrajetAtteint())
-	{
-
+	if(robotManager.getTrajetAtteint()) {
 		nextEtape();
-
-
 	}
 
 	// Processing de l'asservissement.
@@ -247,18 +239,17 @@ void matchLoop() {
 }
 
 void nextEtape(){
-
 	RobotConsigne rc = RobotConsigne();
 	rc.setType(CONSIGNE_POLAIRE);
 	ConsignePolaire p = ConsignePolaire();
 	p.enableFrein();
-	p.setVitesseDistance(300);
-	p.setVitesseOrientation(300);
+	p.setVitesseDistance(100);
+	p.setVitesseOrientation(100);
     Serial.print(" Etapes : ");
 	Serial.println(gestEtapes,DEC);
 	switch (gestEtapes) {
 	case 0 :
-			p.setConsigneDistance(Conv.mmToPulse(200));
+			p.setConsigneDistance(Conv.mmToPulse(250));
 			p.setConsigneOrientation(Conv.degToPulse(45));
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
