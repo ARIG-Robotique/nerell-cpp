@@ -25,7 +25,7 @@
 
 //#define CYCLE_ASSERV				78			// Asserv 128 us * 78 = 9,984 ms
 //#define TIME_ASSERV				0.009984	// En s
-#define TIME_ASSERV_MS				10
+#define TIME_ASSERV_MS				15
 
 /*
 POUR INFOS
