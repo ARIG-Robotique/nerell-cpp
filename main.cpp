@@ -115,14 +115,14 @@ void setup() {
 	// Inputs
 	capteurs.setPinForCapteur(TIRETTE, TIRETTE_PIN, true);
 	capteurs.setPinForCapteur(EQUIPE, EQUIPE_PIN, true);
-	capteurs.setPinForCapteur(LATERAL_ARRIERE_DROIT, LATERAL_ARRIERE_DROIT_PIN);
-	capteurs.setPinForCapteur(LATERAL_ARRIERE_GAUCHE, LATERAL_ARRIERE_GAUCHE_PIN);
-	capteurs.setPinForCapteur(LATERAL_AVANT_DROIT, LATERAL_AVANT_DROIT_PIN);
-	capteurs.setPinForCapteur(LATERAL_AVANT_GAUCHE, LATERAL_AVANT_GAUCHE_PIN);
-	capteurs.setPinForCapteur(ARRIERE_DROIT, ARRIERE_DROIT_PIN);
-	capteurs.setPinForCapteur(ARRIERE_GAUCHE, ARRIERE_GAUCHE_PIN);
-	capteurs.setPinForCapteur(AVANT_DROIT, AVANT_DROIT_PIN);
-	capteurs.setPinForCapteur(AVANT_GAUCHE, AVANT_GAUCHE_PIN);
+	capteurs.setPinForCapteur(LATERAL_ARRIERE_DROIT, LATERAL_ARRIERE_DROIT_PIN, true);
+	capteurs.setPinForCapteur(LATERAL_ARRIERE_GAUCHE, LATERAL_ARRIERE_GAUCHE_PIN, true);
+	capteurs.setPinForCapteur(LATERAL_AVANT_DROIT, LATERAL_AVANT_DROIT_PIN, true);
+	capteurs.setPinForCapteur(LATERAL_AVANT_GAUCHE, LATERAL_AVANT_GAUCHE_PIN, true);
+	capteurs.setPinForCapteur(ARRIERE_DROIT, ARRIERE_DROIT_PIN, true);
+	capteurs.setPinForCapteur(ARRIERE_GAUCHE, ARRIERE_GAUCHE_PIN, true);
+	capteurs.setPinForCapteur(AVANT_DROIT, AVANT_DROIT_PIN, true);
+	capteurs.setPinForCapteur(AVANT_GAUCHE, AVANT_GAUCHE_PIN, true);
 #ifdef DEBUG_MODE
 	Serial.println(" - Capteurs [OK]");
 #endif
