@@ -44,11 +44,11 @@ int gestEtapes;
 // ------------------------ //
 // Configuration des rampes //
 // ------------------------ //
-const int rampAccDistance = 100.0; // en mm/s2
-const int rampDecDistance = 100.0; // en mm/s2
+const int rampAccDistance = 250.0; // en mm/s2
+const int rampDecDistance = 50.0; // en mm/s2
 
-const double rampAccOrientation = 100.0; // en mm/s2
-const double rampDecOrientation = 100.0; // en mm/s2
+const double rampAccOrientation = 250.0; // en mm/s2
+const double rampDecOrientation = 50.0; // en mm/s2
 
 // -------------- //
 // Parametres PID //
@@ -219,10 +219,18 @@ int main(void) {
 	endMatch();
 
 	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
+	boolean x = true;
 	while(true) {
 		heartBeat();
 
-		// TODO : Lors du réangement de la tirette refermé les servos.
+		if (x && capteurs.readCapteurValue(TIRETTE)) {
+#ifdef DEBUG_MODE
+			Serial.println(" == C'EST FINI ==");
+#endif
+			x = false;
+			closeDoors();
+			brasHome();
+		}
 	}
 }
 
