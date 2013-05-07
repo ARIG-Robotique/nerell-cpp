@@ -177,6 +177,9 @@ int main(void) {
 	}
 #endif
 
+	// TODO : Position initiale
+	robotManager.setPosition(Conv.mmToPulse(1500), 0, Conv.degToPulse(45));
+
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
 #endif
