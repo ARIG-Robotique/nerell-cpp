@@ -30,6 +30,11 @@ int heartTimePrec;
 int heartTime;
 boolean heart;
 
+// Valeur de tempo servo
+unsigned int servoTime;
+const int tempoServo = 2000;
+boolean servoOpen;
+
 // Classe de convertion
 Convertion Conv = Convertion(4.18828797610251, 11.2573099415205);
 
@@ -155,6 +160,7 @@ void setup() {
 
 	// Ini Gestion Etapes
 	gestEtapes = 0;
+	servoOpen = false;
 }
 
 // Point d'entrée du programme
@@ -268,87 +274,126 @@ void nextEtape(){
 #endif
 	switch (gestEtapes) {
 	case 0 :
-			p.setConsigneDistance(Conv.mmToPulse(250));
-			p.setConsigneOrientation(Conv.degToPulse(45));
+			p.setConsigneDistance(Conv.mmToPulse(141));
+			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
 	case 1 :
-		    p.setConsigneDistance(Conv.mmToPulse(900));
-			p.setConsigneOrientation(-Conv.degToPulse(90));
+		    p.setConsigneDistance(0);
+		    if (team == BLEU) {
+		    	p.setConsigneOrientation(-Conv.degToPulse(45));
+		    } else {
+		    	p.setConsigneOrientation(Conv.degToPulse(45));
+		    }
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
-			gestEtapes += 2;
-			servoManager.setPosition(SERVO_PORTE_DROITE,PORTE_DROITE_OPEN);
-			servoManager.setPosition(SERVO_PORTE_GAUCHE,PORTE_GAUCHE_OPEN);
+			gestEtapes++;
 			break;
-	/*case 2 :
-		    p.setConsigneDistance(Conv.mmToPulse(800));
+	case 2 :
+		    p.setConsigneDistance(Conv.mmToPulse(320));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
-			break;*/
+			break;
 	case 3 :
-			p.setConsigneDistance(Conv.mmToPulse(500));
-			p.setConsigneOrientation(-Conv.degToPulse(90));
+			p.setConsigneDistance(0);
+		    if (team == BLEU) {
+		    	p.setConsigneOrientation(-Conv.degToPulse(90));
+		    } else {
+		    	p.setConsigneOrientation(Conv.degToPulse(90));
+		    }
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
-			gestEtapes+=2;
+			gestEtapes++;
 			break;
-	/*case 4 :
-			p.setConsigneDistance(Conv.mmToPulse(150));
+	case 4 :
+			p.setConsigneDistance(Conv.mmToPulse(130));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
-			break;*/
+			break;
 	case 5 :
 			p.setConsigneDistance(0);
-			p.setConsigneOrientation(Conv.degToPulse(90));
+		    if (team == BLEU) {
+		    	p.setConsigneOrientation(Conv.degToPulse(90));
+		    } else {
+		    	p.setConsigneOrientation(-Conv.degToPulse(90));
+		    }
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
+
 	case 6 :
-			p.setConsigneDistance(Conv.mmToPulse(1000));
-			p.setConsigneOrientation(Conv.degToPulse(180));
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-	case 7 :
-			p.setConsigneDistance(-Conv.mmToPulse(100));
-			p.setConsigneOrientation(0);
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
 	case 8 :
-			p.setConsigneDistance(Conv.mmToPulse(1000));
-			p.setConsigneOrientation(-Conv.degToPulse(180));
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-	case 9 :
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(Conv.degToPulse(360));
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
 	case 10 :
-			servoManager.setPosition(SERVO_BRAS_DROIT,BRAS_DROIT_CDX_HAUT);
-			servoManager.setPosition(SERVO_BRAS_GAUCHE,BRAS_GAUCHE_CDX_HAUT);
-			servoManager.setPosition(SERVO_PORTE_DROITE,PORTE_DROITE_CLOSE);
-			servoManager.setPosition(SERVO_PORTE_GAUCHE,PORTE_GAUCHE_CLOSE);
+	case 12 :
+		if (!servoOpen) {
+			//Serial.print("Ouverture bras : ");Serial.print(gestEtapes, DEC);
+			servoOpen = true;
+			if (team == ROUGE) {
+				servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_CDX_HAUT);
+			} else {
+				servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_CDX_HAUT);
+			}
+			servoTime = millis();
+		} else if (servoOpen && (millis() - servoTime >= tempoServo)){
+			//Serial.print("Fermeture bras : ");Serial.print(gestEtapes, DEC);
+			brasHome();
+			servoOpen = false;
 			gestEtapes++;
-			break;
+		}
 
+		break;
+
+	case 7 :
+	case 9 :
+	case 11 :
+		p.setConsigneDistance(Conv.mmToPulse(600));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 13 :
+	case 15 :
+		p.setConsigneDistance(0);
+	    if (team == BLEU) {
+	    	p.setConsigneOrientation(Conv.degToPulse(90));
+	    } else {
+	    	p.setConsigneOrientation(-Conv.degToPulse(90));
+	    }
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		if (gestEtapes == 15) {
+			servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
+			servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
+		}
+
+		gestEtapes++;
+		break;
+
+	case 14 :
+		p.setConsigneDistance(Conv.mmToPulse(330));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 16:
+		p.setConsigneDistance(Conv.mmToPulse(1900));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
 	}
-
 }
 
 
