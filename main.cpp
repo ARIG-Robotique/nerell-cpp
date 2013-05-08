@@ -168,7 +168,7 @@ int main(void) {
 
 	if (!capteurs.readCapteurValue(TIRETTE)) {
 #ifdef DEBUG_MODE
-		Serial.println(" /!\ La tirette n'est pas présente il faut d'abord la mettre !");
+		Serial.println(" /!\\ La tirette n'est pas présente il faut d'abord la mettre !");
 		while(!capteurs.readCapteurValue(TIRETTE));
 #endif
 	}
