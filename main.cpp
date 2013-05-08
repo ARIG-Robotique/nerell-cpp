@@ -88,6 +88,12 @@ void setup() {
 	servoManager.printVersion();
 #endif
 
+	// Configuration des vitesses
+	servoManager.setSpeed(SERVO_BRAS_DROIT, SPEED_BRAS);
+	servoManager.setSpeed(SERVO_BRAS_GAUCHE, SPEED_BRAS);
+	servoManager.setSpeed(SERVO_PORTE_DROITE, SPEED_PORTE);
+	servoManager.setSpeed(SERVO_PORTE_GAUCHE, SPEED_PORTE);
+
 	// ------------- //
 	// Robot manager //
 	// ------------- //
