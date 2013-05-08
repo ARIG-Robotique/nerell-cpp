@@ -154,9 +154,7 @@ void setup() {
 	closeVanne();
 
 	// Ini Gestion Etapes
-
 	gestEtapes = 0;
-
 }
 
 // Point d'entrée du programme
@@ -263,8 +261,11 @@ void nextEtape(){
 	p.enableFrein();
 	p.setVitesseDistance(100);
 	p.setVitesseOrientation(100);
-    Serial.print(" Etapes : ");
-	Serial.println(gestEtapes,DEC);
+
+#ifdef DEBUG_MODE
+    //Serial.print(" Etapes : ");
+	//Serial.println(gestEtapes,DEC);
+#endif
 	switch (gestEtapes) {
 	case 0 :
 			p.setConsigneDistance(Conv.mmToPulse(250));
