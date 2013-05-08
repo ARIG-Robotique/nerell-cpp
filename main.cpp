@@ -317,8 +317,7 @@ void startGonfleur() {
 #ifdef DEBUG_MODE
 	Serial.println(" * Allumage du gonfleur");
 #endif
-	// /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
-	//digitalWrite(GONFLEUR, HIGH);
+	digitalWrite(GONFLEUR, HIGH);
 }
 
 /*
