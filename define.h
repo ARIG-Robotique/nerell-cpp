@@ -38,6 +38,9 @@ POUR INFOS
 #define ENTRAXE_PULSE				651.084		// Entraxe en pulse
 */
 
+#define ROUGE			1
+#define BLEU			0
+
 // ------------------------------- //
 // Configuration des servo moteurs //
 // ------------------------------- //
