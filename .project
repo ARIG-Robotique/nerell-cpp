@@ -3,6 +3,8 @@
 	<name>Template</name>
 	<comment></comment>
 	<projects>
+		<project>arduino-core</project>
+		<project>robot-system-lib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
