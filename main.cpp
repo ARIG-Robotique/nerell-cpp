@@ -181,6 +181,14 @@ int main(void) {
 	Serial.println(" == INIT MATCH ==");
 	Serial.println(" - Attente tirette ....");
 #endif
+
+	if (!capteurs.readCapteurValue(TIRETTE)) {
+#ifdef DEBUG_MODE
+		Serial.println(" /!\ La tirette n'est pas présente il faut d'abord la mettre !");
+		while(!capteurs.readCapteurValue(TIRETTE));
+#endif
+	}
+
 	while(capteurs.readCapteurValue(TIRETTE)) {
 		heartBeat();
 		if (Serial.available()) {
