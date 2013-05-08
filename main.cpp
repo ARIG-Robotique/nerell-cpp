@@ -61,6 +61,9 @@ const double kpOrientation = 1.20;
 const double kiOrientation = 0.80;
 const double kdOrientation = 0.00;
 
+// Variable pour l'équipe
+byte team;
+
 // ------------------------------------------------------- //
 // ------------------------- MAIN ------------------------ //
 // ------------------------------------------------------- //
@@ -92,6 +95,12 @@ void setup() {
 #ifdef DEBUG_MODE
 	servoManager.printVersion();
 #endif
+
+	// Configuration des vitesses
+	servoManager.setSpeed(SERVO_BRAS_DROIT, SPEED_BRAS);
+	servoManager.setSpeed(SERVO_BRAS_GAUCHE, SPEED_BRAS);
+	servoManager.setSpeed(SERVO_PORTE_DROITE, SPEED_PORTE);
+	servoManager.setSpeed(SERVO_PORTE_GAUCHE, SPEED_PORTE);
 
 	// ------------- //
 	// Robot manager //
@@ -158,8 +167,13 @@ int main(void) {
 	// Initialisation de l'application
 	setup();
 
-	// Procédure d'initialisation Robot (calage, tirette, etc).
 #ifdef DEBUG_MODE
+	// Affichage de la couleur de l'équipe
+	team = capteurs.readCapteurValue(EQUIPE);
+	Serial.print(" ========================= > ");
+	Serial.println((team == ROUGE) ? "ROUGE" : "BLEU");
+
+	// Procédure d'initialisation Robot (calage, tirette, etc).
 	Serial.println(" == INIT MATCH ==");
 	Serial.println(" - Attente tirette ....");
 #endif
@@ -179,18 +193,21 @@ int main(void) {
 	// Reset des valeurs codeurs lors des différents mouvements de positionnement
 	robotManager.resetEncodeurs();
 
-	int team = capteurs.readCapteurValue(EQUIPE);
+	team = capteurs.readCapteurValue(EQUIPE);
 #ifdef DEBUG_MODE
 	Serial.print(" - Equipe : ");
-	if (team) {
-		Serial.println("ROUGE");
-	} else {
-		Serial.println("BLEU");
-	}
 #endif
-
-	// TODO : Position initiale
-	robotManager.setPosition(Conv.mmToPulse(1500), 0, Conv.degToPulse(45));
+	if (team == ROUGE) {
+#ifdef DEBUG_MODE
+		Serial.println("ROUGE");
+#endif
+		robotManager.setPosition(Conv.mmToPulse(250), Conv.mmToPulse(2850), Conv.degToPulse(45));
+	} else {
+#ifdef DEBUG_MODE
+		Serial.println("BLEU");
+#endif
+		robotManager.setPosition(Conv.mmToPulse(250), Conv.mmToPulse(150), -Conv.degToPulse(45));
+	}
 
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
@@ -222,18 +239,8 @@ int main(void) {
 	endMatch();
 
 	// Action de clignotement de la la led built-in pour montrer que la programme fonctionne toujours.
-	boolean x = true;
 	while(true) {
 		heartBeat();
-
-		if (x && capteurs.readCapteurValue(TIRETTE)) {
-#ifdef DEBUG_MODE
-			Serial.println(" == C'EST FINI ==");
-#endif
-			x = false;
-			closeDoors();
-			brasHome();
-		}
 	}
 }
 

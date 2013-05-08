@@ -38,12 +38,15 @@ POUR INFOS
 #define ENTRAXE_PULSE				651.084		// Entraxe en pulse
 */
 
+#define ROUGE			1
+#define BLEU			0
+
 // ------------------------------- //
 // Configuration des servo moteurs //
 // ------------------------------- //
 
-#define SPEED_BRAS				10
-#define SPEED_PORTE				5
+#define SPEED_BRAS				25
+#define SPEED_PORTE				15
 
 #define SERVO_BRAS_DROIT		1
 #define SERVO_BRAS_GAUCHE		2
