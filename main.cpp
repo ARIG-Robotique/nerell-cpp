@@ -428,8 +428,7 @@ void startGonfleur() {
 #ifdef DEBUG_MODE
 	Serial.println(" * Allumage du gonfleur");
 #endif
-	// /!\ NE PAS ACTIVER POUR LE MOMENT PB ALIMENTATION
-	//digitalWrite(GONFLEUR, HIGH);
+	digitalWrite(GONFLEUR, HIGH);
 }
 
 /*
@@ -446,7 +445,6 @@ void stopGonfleur() {
  * Méthode retournant l'information de présence d'un obstacle (adversaire ???)
  */
 boolean hasObstacle() {
-	// TODO : Liste de capteurs indiquant que le robot est face à un autre.
+	// Juste les deux de devant
 	return capteurs.readCapteurValue(AVANT_DROIT) || capteurs.readCapteurValue(AVANT_GAUCHE) ;
-
 }
