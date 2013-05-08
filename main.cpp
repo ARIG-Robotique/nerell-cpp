@@ -335,6 +335,6 @@ void stopGonfleur() {
  * Méthode retournant l'information de présence d'un obstacle (adversaire ???)
  */
 boolean hasObstacle() {
-	// TODO : Liste de capteurs indiquant que le robot est face à un autre.
-	return false;
+	// Juste les deux de devant
+	return capteurs.readCapteurValue(AVANT_DROIT) || capteurs.readCapteurValue(AVANT_GAUCHE) ;
 }
