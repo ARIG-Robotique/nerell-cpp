@@ -357,9 +357,9 @@ void nextEtape(){
 
 		break;
 
-	case 7 :
-	case 9 :
-	case 11 :
+	case 7:
+	case 9:
+	case 11:
 		p.setConsigneDistance(Conv.mmToPulse(600));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
@@ -367,17 +367,19 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
-	case 13 :
-	case 15 :
+	case 13:
+	case 15:
+	case 20:
+	case 22:
 		p.setConsigneDistance(0);
-	    if (team == BLEU) {
-	    	p.setConsigneOrientation(Conv.degToPulse(90));
-	    } else {
-	    	p.setConsigneOrientation(-Conv.degToPulse(90));
-	    }
+		if (team == BLEU) {
+			p.setConsigneOrientation(Conv.degToPulse(90));
+		} else {
+			p.setConsigneOrientation(-Conv.degToPulse(90));
+		}
 		rc.setConsignePolaire(p);
 		robotManager.setConsigneTable(rc);
-		if (gestEtapes == 15) {
+		if (gestEtapes == 15 || gestEtapes == 22) {
 			servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
 			servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
 		}
@@ -385,7 +387,7 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
-	case 14 :
+	case 14:
 		p.setConsigneDistance(Conv.mmToPulse(455));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
@@ -394,15 +396,64 @@ void nextEtape(){
 		break;
 
 	case 16:
+	case 23:
 		p.setConsigneDistance(Conv.mmToPulse(1900));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
 		robotManager.setConsigneTable(rc);
 		gestEtapes++;
 		break;
-	}
-}
 
+	case 17:
+	case 24:
+		p.setConsigneDistance(-Conv.mmToPulse(130));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 18:
+	case 25:
+		p.setConsigneDistance(0);
+		p.setConsigneOrientation(Conv.degToPulse(180));
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		closeDoors();
+		gestEtapes++;
+		break;
+
+	case 19:
+		p.setConsigneDistance(Conv.mmToPulse(1770));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 21:
+		p.setConsigneDistance(Conv.mmToPulse(375));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 26:
+		p.setConsigneDistance(Conv.mmToPulse(500));
+		if (team == BLEU) {
+			p.setConsigneOrientation(-Conv.degToPulse(90));
+		} else {
+			p.setConsigneOrientation(Conv.degToPulse(90));
+		}
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	}
+
+}
 
 // ----------------------------------- //
 // Méthode appelé pour la fin du match //
@@ -506,7 +557,8 @@ void stopGonfleur() {
  */
 boolean hasObstacle() {
 	// Juste les deux de devant
-	boolean obstacle = capteurs.readCapteurValue(AVANT_DROIT) || capteurs.readCapteurValue(AVANT_GAUCHE);
+	boolean obstacle = capteurs.readCapteurValue(AVANT_DROIT)
+			|| capteurs.readCapteurValue(AVANT_GAUCHE);
 	if (team == BLEU && gestEtapes <= 13) {
 		// Les cadeaux sont a droite
 		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE);
@@ -516,8 +568,7 @@ boolean hasObstacle() {
 	}
 
 	if (gestEtapes > 13) {
-		obstacle = obstacle
-				|| capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE)
+		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE)
 				|| capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
 	}
 	return obstacle;
