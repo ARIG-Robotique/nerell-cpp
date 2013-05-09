@@ -388,7 +388,7 @@ void nextEtape(){
 		break;
 
 	case 14 :
-		p.setConsigneDistance(Conv.mmToPulse(330));
+		p.setConsigneDistance(Conv.mmToPulse(455));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
 		robotManager.setConsigneTable(rc);
