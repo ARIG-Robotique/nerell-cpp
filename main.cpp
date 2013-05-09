@@ -214,12 +214,12 @@ int main(void) {
 #ifdef DEBUG_MODE
 		Serial.println("ROUGE");
 #endif
-		robotManager.setPosition(Conv.mmToPulse(250), Conv.mmToPulse(2850), Conv.degToPulse(45));
+		robotManager.setPosition(Conv.mmToPulse(2850), Conv.mmToPulse(250), Conv.degToPulse(135));
 	} else {
 #ifdef DEBUG_MODE
 		Serial.println("BLEU");
 #endif
-		robotManager.setPosition(Conv.mmToPulse(250), Conv.mmToPulse(150), -Conv.degToPulse(45));
+		robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(250), Conv.degToPulse(45));
 	}
 
 #ifdef DEBUG_MODE
