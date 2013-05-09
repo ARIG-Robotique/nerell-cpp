@@ -48,6 +48,9 @@ POUR INFOS
 #define SPEED_BRAS				25
 #define SPEED_PORTE				15
 
+#define BRAS_OUVERT				0xFF
+#define BRAS_FERME				0x00
+
 #define SERVO_BRAS_DROIT		1
 #define SERVO_BRAS_GAUCHE		2
 #define SERVO_PORTE_DROITE		3

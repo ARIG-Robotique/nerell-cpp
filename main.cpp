@@ -33,7 +33,7 @@ boolean heart;
 // Valeur de tempo servo
 unsigned int servoTime;
 const int tempoServo = 2000;
-boolean servoOpen;
+byte servoOpen;
 
 // Classe de convertion
 Convertion Conv = Convertion(4.18828797610251, 11.2573099415205);
@@ -160,7 +160,7 @@ void setup() {
 
 	// Ini Gestion Etapes
 	gestEtapes = 0;
-	servoOpen = false;
+	servoOpen = BRAS_FERME;
 }
 
 // Point d'entrée du programme
@@ -341,19 +341,17 @@ void nextEtape(){
 	case 8 :
 	case 10 :
 	case 12 :
-		if (!servoOpen) {
-			//Serial.print("Ouverture bras : ");Serial.print(gestEtapes, DEC);
-			servoOpen = true;
+		if (servoOpen == BRAS_FERME) {
 			if (team == ROUGE) {
 				servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_CDX_HAUT);
 			} else {
 				servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_CDX_HAUT);
 			}
+			servoOpen = BRAS_OUVERT;
 			servoTime = millis();
-		} else if (servoOpen && (millis() - servoTime >= tempoServo)){
-			//Serial.print("Fermeture bras : ");Serial.print(gestEtapes, DEC);
+		} else if (servoOpen == BRAS_OUVERT && (millis() - servoTime >= tempoServo)){
 			brasHome();
-			servoOpen = false;
+			servoOpen = BRAS_FERME;
 			gestEtapes++;
 		}
 
