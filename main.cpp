@@ -589,9 +589,6 @@ void heartBeat() {
  * Méthode pour placer les bras à la maison
  */
 void brasHome() {
-#ifdef DEBUG_MODE
-	Serial.println(" * Les bras a la maison");
-#endif
 	servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_HOME);
 	servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_HOME);
 }
@@ -600,9 +597,6 @@ void brasHome() {
  * Méthode pour fermer les portes
  */
 void closeDoors() {
-#ifdef DEBUG_MODE
-	Serial.println(" * Fermeture des portes");
-#endif
 	servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_CLOSE);
 	servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_CLOSE);
 }
@@ -611,9 +605,6 @@ void closeDoors() {
  * Ouverture de l'electrovanne
  */
 void openVanne() {
-#ifdef DEBUG_MODE
-	Serial.println(" * Ouverture de l'electro vanne");
-#endif
 	digitalWrite(ELECTRO_VANNE, HIGH);
 }
 
@@ -621,9 +612,6 @@ void openVanne() {
  * Fermeture de la vanne
  */
 void closeVanne() {
-#ifdef DEBUG_MODE
-	Serial.println(" * Fermeture electro-vanne");
-#endif
 	digitalWrite(ELECTRO_VANNE, LOW);
 }
 
@@ -631,9 +619,6 @@ void closeVanne() {
  * Allumage du gonfleur
  */
 void startGonfleur() {
-#ifdef DEBUG_MODE
-	Serial.println(" * Allumage du gonfleur");
-#endif
 	digitalWrite(GONFLEUR, HIGH);
 }
 
@@ -641,9 +626,6 @@ void startGonfleur() {
  * Arret du gonfleur
  */
 void stopGonfleur() {
-#ifdef DEBUG_MODE
-	Serial.println(" * Stop gonfleur");
-#endif
 	digitalWrite(GONFLEUR, LOW);
 }
 
