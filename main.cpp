@@ -43,8 +43,17 @@ RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
 Board2007NoMux capteurs = Board2007NoMux();
 
-//Gestion des étapes
+// Gestion des étapes
 int gestEtapes;
+
+
+// Position des zones cadeaux pour les servos
+const int cdx1Center = 600;
+const int cdx2Center = 1200;
+const int cdx3Center = 1800;
+const int cdx4Center = 2400;
+const int cdxStartOffset = 150;
+const int cdxStopOffset = 250;
 
 // ------------------------ //
 // Configuration des rampes //
@@ -267,6 +276,103 @@ void matchLoop() {
 
 	// Processing de l'asservissement.
 	robotManager.process();
+
+	// Gestion des servos de bras en fonction de la position en X
+	RobotPosition currentPosition = robotManager.getPosition();
+	int startOffset = cdxStartOffset;
+	if (team == BLEU) {
+		startOffset = startOffset * -1;
+	}
+	int stopOffset = cdxStopOffset;
+	if (team == ROUGE) {
+		stopOffset = stopOffset * -1;
+	}
+	if (gestEtapes > 6 && gestEtapes < 14) { // Les étapes
+		if (team == BLEU) {
+			if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
+					&& servoOpen == BRAS_FERME
+					&& (
+						(currentPosition.getX() > Conv.mmToPulse(cdx1Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx1Center + stopOffset)) // CDX 1
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx2Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx2Center + stopOffset)) // CDX 2
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx3Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx3Center + stopOffset)) // CDX 3
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx4Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx4Center + stopOffset)) // CDX 4
+				)
+			) {
+				// Ouverture
+				servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_CDX_HAUT);
+				servoOpen = BRAS_OUVERT;
+
+			} else if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
+					&& servoOpen == BRAS_OUVERT
+					&& (
+						(currentPosition.getX() > Conv.mmToPulse(cdx1Center + stopOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx2Center + startOffset)) // CDX 1 -> CDX 2
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx2Center + stopOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx3Center + startOffset)) // CDX 2 -> CDX 3
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx3Center + stopOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx4Center + startOffset)) // CDX 3 -> CDX 4
+				)
+
+			) {
+				// Fermeture
+				brasHome();
+				servoOpen = BRAS_FERME;
+			}
+		} else {
+			if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
+					&& servoOpen == BRAS_FERME
+					&& (
+						(currentPosition.getX() < Conv.mmToPulse(cdx1Center + startOffset)
+								&& currentPosition.getX() > Conv.mmToPulse(cdx1Center + stopOffset)) // CDX 1
+
+						|| (currentPosition.getX() < Conv.mmToPulse(cdx2Center + startOffset)
+								&& currentPosition.getX() > Conv.mmToPulse(cdx2Center + stopOffset)) // CDX 2
+
+						|| (currentPosition.getX() < Conv.mmToPulse(cdx3Center + startOffset)
+								&& currentPosition.getX() > Conv.mmToPulse(cdx3Center + stopOffset)) // CDX 3
+
+						|| (currentPosition.getX() < Conv.mmToPulse(cdx4Center + startOffset)
+								&& currentPosition.getX() > Conv.mmToPulse(cdx4Center + stopOffset)) // CDX 4
+				)
+			) {
+				// Ouverture
+				servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_CDX_HAUT);
+				servoOpen = BRAS_OUVERT;
+
+			} else if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
+					&& servoOpen == BRAS_OUVERT
+					&& (
+						(currentPosition.getX() > Conv.mmToPulse(cdx1Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx2Center + stopOffset)) // CDX 2 -> CDX 1
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx2Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx3Center + stopOffset)) // CDX 3 -> CDX 2
+
+						|| (currentPosition.getX() > Conv.mmToPulse(cdx3Center + startOffset)
+								&& currentPosition.getX() < Conv.mmToPulse(cdx4Center + stopOffset)) // CDX 4 -> CDX 3
+				)
+
+			) {
+				// Fermeture
+				brasHome();
+				servoOpen = BRAS_FERME;
+			}
+		}
+	} else {
+		if (servoOpen) {
+			brasHome();
+			servoOpen = BRAS_FERME;
+		}
+	}
 }
 
 void nextEtape(){
@@ -274,13 +380,9 @@ void nextEtape(){
 	rc.setType(CONSIGNE_POLAIRE);
 	ConsignePolaire p = ConsignePolaire();
 	p.enableFrein();
-	p.setVitesseDistance(100);
-	p.setVitesseOrientation(100);
+	p.setVitesseDistance(600);
+	p.setVitesseOrientation(600);
 
-#ifdef DEBUG_MODE
-    //Serial.print(" Etapes : ");
-	//Serial.println(gestEtapes,DEC);
-#endif
 	switch (gestEtapes) {
 	case 0 :
 			p.setConsigneDistance(Conv.mmToPulse(141));
@@ -341,20 +443,7 @@ void nextEtape(){
 	case 8 :
 	case 10 :
 	case 12 :
-		if (servoOpen == BRAS_FERME) {
-			if (team == ROUGE) {
-				servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_CDX_HAUT);
-			} else {
-				servoManager.setPosition(SERVO_BRAS_DROIT, BRAS_DROIT_CDX_HAUT);
-			}
-			servoOpen = BRAS_OUVERT;
-			servoTime = millis();
-		} else if (servoOpen == BRAS_OUVERT && (millis() - servoTime >= tempoServo)){
-			brasHome();
-			servoOpen = BRAS_FERME;
-			gestEtapes++;
-		}
-
+		gestEtapes++;
 		break;
 
 	case 7:
@@ -451,8 +540,14 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
+	case 27:
+			p.setConsigneDistance(0);
+			p.setConsigneOrientation(Conv.degToPulse(360));
+			rc.setConsignePolaire(p);
+			robotManager.setConsigneTable(rc);
+			gestEtapes++;
+			break;
 	}
-
 }
 
 // ----------------------------------- //
