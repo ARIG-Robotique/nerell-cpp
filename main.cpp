@@ -32,7 +32,7 @@ boolean heart;
 
 // Valeur de tempo servo
 unsigned int servoTime;
-const int tempoServo = 2000;
+const int tempoServo = 700;
 byte servoOpen;
 
 // Classe de convertion
