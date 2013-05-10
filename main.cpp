@@ -232,6 +232,10 @@ int main(void) {
 		robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(250), Conv.degToPulse(45));
 	}
 
+	// Pour tester //
+	// TODO : A supprimer
+	robotManager.setPosition(0, 0, 0);
+
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
 #endif
@@ -378,176 +382,34 @@ void matchLoop() {
 
 void nextEtape(){
 	RobotConsigne rc = RobotConsigne();
-	rc.setType(CONSIGNE_POLAIRE);
-	ConsignePolaire p = ConsignePolaire();
-	p.enableFrein();
-	p.setVitesseDistance(600);
-	p.setVitesseOrientation(600);
-
+	ConsignePolaire pol = ConsignePolaire();
 	switch (gestEtapes) {
-	case 0 :
-			p.setConsigneDistance(Conv.mmToPulse(141));
-			p.setConsigneOrientation(0);
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
+	case 0:
+		rc.setType(CONSIGNE_POLAIRE);
+		pol.setConsigneDistance(Conv.mmToPulse(1000));
+		pol.setConsigneOrientation(0);
+		pol.enableFrein();
+		rc.setConsignePolaire(pol);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	/*case 0 :
+		rc.setType(CONSIGNE_ODOMETRIE);
+		rc.enableFrein();
+		p.updatePosition(Conv.mmToPulse(800), Conv.mmToPulse(500), 0);
+		rc.setPosition(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
 	case 1 :
-		    p.setConsigneDistance(0);
-		    if (team == BLEU) {
-		    	p.setConsigneOrientation(-Conv.degToPulse(45));
-		    } else {
-		    	p.setConsigneOrientation(Conv.degToPulse(45));
-		    }
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-	case 2 :
-		    p.setConsigneDistance(Conv.mmToPulse(320));
-			p.setConsigneOrientation(0);
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-	case 3 :
-			p.setConsigneDistance(0);
-		    if (team == BLEU) {
-		    	p.setConsigneOrientation(-Conv.degToPulse(90));
-		    } else {
-		    	p.setConsigneOrientation(Conv.degToPulse(90));
-		    }
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-	case 4 :
-			p.setConsigneDistance(Conv.mmToPulse(130));
-			p.setConsigneOrientation(0);
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-	case 5 :
-			p.setConsigneDistance(0);
-		    if (team == BLEU) {
-		    	p.setConsigneOrientation(Conv.degToPulse(90));
-		    } else {
-		    	p.setConsigneOrientation(-Conv.degToPulse(90));
-		    }
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
-
-	case 6 :
-	case 8 :
-	case 10 :
-	case 12 :
-		gestEtapes++;
-		break;
-
-	case 7:
-	case 9:
-	case 11:
-		p.setConsigneDistance(Conv.mmToPulse(600));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
+		rc.setType(CONSIGNE_ODOMETRIE);
+		rc.enableFrein();
+		p.updatePosition(Conv.mmToPulse(1300), Conv.mmToPulse(200), 0);
+		rc.setPosition(p);
 		robotManager.setConsigneTable(rc);
 		gestEtapes++;
-		break;
-
-	case 13:
-	case 15:
-	case 20:
-	case 22:
-		p.setConsigneDistance(0);
-		if (team == BLEU) {
-			p.setConsigneOrientation(Conv.degToPulse(90));
-		} else {
-			p.setConsigneOrientation(-Conv.degToPulse(90));
-		}
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		if (gestEtapes == 15 || gestEtapes == 22) {
-			servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
-			servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
-		}
-
-		gestEtapes++;
-		break;
-
-	case 14:
-		p.setConsigneDistance(Conv.mmToPulse(455));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 16:
-	case 23:
-		p.setConsigneDistance(Conv.mmToPulse(1900));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 17:
-	case 24:
-		p.setConsigneDistance(-Conv.mmToPulse(130));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 18:
-	case 25:
-		p.setConsigneDistance(0);
-		p.setConsigneOrientation(Conv.degToPulse(180));
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		closeDoors();
-		gestEtapes++;
-		break;
-
-	case 19:
-		p.setConsigneDistance(Conv.mmToPulse(1770));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 21:
-		p.setConsigneDistance(Conv.mmToPulse(320));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 26:
-		p.setConsigneDistance(Conv.mmToPulse(500));
-		if (team == BLEU) {
-			p.setConsigneOrientation(-Conv.degToPulse(90));
-		} else {
-			p.setConsigneOrientation(Conv.degToPulse(90));
-		}
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 27:
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(Conv.degToPulse(360));
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
+		break;*/
 	}
 }
 
