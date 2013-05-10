@@ -328,7 +328,7 @@ void matchLoop() {
 				servoOpen = BRAS_FERME;
 			}
 		} else {
-			if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
+			if (currentPosition.getY() < Conv.mmToPulse(250) // La zone CDX en Y
 					&& servoOpen == BRAS_FERME
 					&& (
 						(currentPosition.getX() < Conv.mmToPulse(cdx1Center + startOffset)
@@ -348,7 +348,7 @@ void matchLoop() {
 				servoManager.setPosition(SERVO_BRAS_GAUCHE, BRAS_GAUCHE_CDX_HAUT);
 				servoOpen = BRAS_OUVERT;
 
-			} else if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
+			} else if (currentPosition.getY() < Conv.mmToPulse(250) // La zone CDX en Y
 					&& servoOpen == BRAS_OUVERT
 					&& (
 						(currentPosition.getX() > Conv.mmToPulse(cdx1Center + startOffset)
