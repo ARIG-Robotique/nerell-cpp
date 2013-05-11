@@ -35,8 +35,9 @@ unsigned int servoTime;
 const int tempoServo = 700;
 byte servoOpen;
 
+
 // Classe de convertion
-Convertion Conv = Convertion(4.18828797610251, 11.2573099415205);
+Convertion Conv = Convertion(3.97887357729738, 11.1805555555556);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
