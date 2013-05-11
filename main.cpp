@@ -54,7 +54,7 @@ const int cdx2Center = 1200;
 const int cdx3Center = 1800;
 const int cdx4Center = 2400;
 const int cdxStartOffset = 150;
-const int cdxStopOffset = 250;
+const int cdxStopOffset = 220;
 
 // ------------------------ //
 // Configuration des rampes //
