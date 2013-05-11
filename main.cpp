@@ -59,10 +59,10 @@ const int cdxStopOffset = 250;
 // Configuration des rampes //
 // ------------------------ //
 const int rampAccDistance = 300.0; // en mm/s2
-const int rampDecDistance = 100.0; // en mm/s2
+const int rampDecDistance = 200.0; // en mm/s2
 
 const double rampAccOrientation = 300.0; // en mm/s2
-const double rampDecOrientation = 100.0; // en mm/s2
+const double rampDecOrientation = 200.0; // en mm/s2
 
 // -------------- //
 // Parametres PID //
