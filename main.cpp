@@ -276,7 +276,9 @@ void matchLoop() {
 	}
 
 	// Processing de l'asservissement.
-	robotManager.process();
+	if (gestEtapes < 22) {
+		robotManager.process();
+	}
 
 	// Gestion des servos de bras en fonction de la position en X
 	RobotPosition currentPosition = robotManager.getPosition();
@@ -288,7 +290,7 @@ void matchLoop() {
 	if (team == ROUGE) {
 		stopOffset = stopOffset * -1;
 	}
-	if (gestEtapes > 6 && gestEtapes < 14) { // Les étapes
+	if (gestEtapes > 18) { // Les étapes
 		if (team == BLEU) {
 			if (currentPosition.getY() < Conv.mmToPulse(230) // La zone CDX en Y
 					&& servoOpen == BRAS_FERME
@@ -386,7 +388,7 @@ void nextEtape(){
 
 	switch (gestEtapes) {
 	case 0 :
-			p.setConsigneDistance(Conv.mmToPulse(141));
+			p.setConsigneDistance(Conv.mmToPulse(636));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
@@ -404,89 +406,43 @@ void nextEtape(){
 			gestEtapes++;
 			break;
 	case 2 :
-		    p.setConsigneDistance(Conv.mmToPulse(320));
+		    p.setConsigneDistance(Conv.mmToPulse(1720));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
 	case 3 :
+	case 5 :
+	case 15 :
+	case 17 :
 			p.setConsigneDistance(0);
 		    if (team == BLEU) {
-		    	p.setConsigneOrientation(-Conv.degToPulse(90));
-		    } else {
 		    	p.setConsigneOrientation(Conv.degToPulse(90));
+		    } else {
+		    	p.setConsigneOrientation(-Conv.degToPulse(90));
 		    }
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
+			if (gestEtapes == 5) {
+				servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
+				servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
+			}
+			if (gestEtapes == 15) {
+				closeDoors();
+			}
 			gestEtapes++;
 			break;
 	case 4 :
-			p.setConsigneDistance(Conv.mmToPulse(130));
+			p.setConsigneDistance(Conv.mmToPulse(250));
 			p.setConsigneOrientation(0);
 			rc.setConsignePolaire(p);
 			robotManager.setConsigneTable(rc);
 			gestEtapes++;
 			break;
-	case 5 :
-			p.setConsigneDistance(0);
-		    if (team == BLEU) {
-		    	p.setConsigneOrientation(Conv.degToPulse(90));
-		    } else {
-		    	p.setConsigneOrientation(-Conv.degToPulse(90));
-		    }
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
 
-	case 6 :
-	case 8 :
-	case 10 :
-	case 12 :
-		gestEtapes++;
-		break;
-
-	case 7:
-	case 9:
-	case 11:
-		p.setConsigneDistance(Conv.mmToPulse(600));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
+	case 6:
 	case 13:
-	case 15:
-	case 20:
-	case 22:
-		p.setConsigneDistance(0);
-		if (team == BLEU) {
-			p.setConsigneOrientation(Conv.degToPulse(90));
-		} else {
-			p.setConsigneOrientation(-Conv.degToPulse(90));
-		}
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		if (gestEtapes == 15 || gestEtapes == 22) {
-			servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
-			servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
-		}
-
-		gestEtapes++;
-		break;
-
-	case 14:
-		p.setConsigneDistance(Conv.mmToPulse(455));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 16:
-	case 23:
 		p.setConsigneDistance(Conv.mmToPulse(1900));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
@@ -494,8 +450,8 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
-	case 17:
-	case 24:
+	case 7:
+	case 14:
 		p.setConsigneDistance(-Conv.mmToPulse(130));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
@@ -503,8 +459,7 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
-	case 18:
-	case 25:
+	case 8:
 		p.setConsigneDistance(0);
 		p.setConsigneOrientation(Conv.degToPulse(180));
 		rc.setConsignePolaire(p);
@@ -513,7 +468,7 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
-	case 19:
+	case 9:
 		p.setConsigneDistance(Conv.mmToPulse(1770));
 		p.setConsigneOrientation(0);
 		rc.setConsignePolaire(p);
@@ -521,16 +476,9 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 
-	case 21:
-		p.setConsigneDistance(Conv.mmToPulse(320));
-		p.setConsigneOrientation(0);
-		rc.setConsignePolaire(p);
-		robotManager.setConsigneTable(rc);
-		gestEtapes++;
-		break;
-
-	case 26:
-		p.setConsigneDistance(Conv.mmToPulse(500));
+	case 10 :
+	case 12 :
+		p.setConsigneDistance(0);
 		if (team == BLEU) {
 			p.setConsigneOrientation(-Conv.degToPulse(90));
 		} else {
@@ -538,16 +486,44 @@ void nextEtape(){
 		}
 		rc.setConsignePolaire(p);
 		robotManager.setConsigneTable(rc);
+		if (gestEtapes == 12) {
+			servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
+			servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
+		}
+
 		gestEtapes++;
 		break;
 
-	case 27:
-			p.setConsigneDistance(0);
-			p.setConsigneOrientation(Conv.degToPulse(360));
-			rc.setConsignePolaire(p);
-			robotManager.setConsigneTable(rc);
-			gestEtapes++;
-			break;
+	case 11:
+		p.setConsigneDistance(Conv.mmToPulse(350));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 16 :
+		p.setConsigneDistance(Conv.mmToPulse(380));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+
+	case 18 :
+	case 19 :
+	case 20 :
+		robotManager.setRampAcc(100.0, 100.0);
+		p.setConsigneDistance(Conv.mmToPulse(600));
+		p.setConsigneOrientation(0);
+		rc.setConsignePolaire(p);
+		robotManager.setConsigneTable(rc);
+		gestEtapes++;
+		break;
+	case 21:
+		//closeDoors();
+		gestEtapes++;
+		break;
 	}
 }
 
@@ -637,15 +613,15 @@ boolean hasObstacle() {
 	// Juste les deux de devant
 	boolean obstacle = capteurs.readCapteurValue(AVANT_DROIT)
 			|| capteurs.readCapteurValue(AVANT_GAUCHE);
-	if (team == BLEU && gestEtapes <= 13) {
+	if (team == BLEU && gestEtapes >= 18) {
 		// Les cadeaux sont a droite
 		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE);
-	} else if (team == ROUGE && gestEtapes <= 13) {
+	} else if (team == ROUGE && gestEtapes >= 18) {
 		// Les cadeaux sont a gauche
 		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
 	}
 
-	if (gestEtapes > 13) {
+	if (gestEtapes < 18) {
 		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE)
 				|| capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
 	}
