@@ -238,6 +238,9 @@ int main(void) {
 
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
+
+	// En tête de log
+	Serial.println("X;Y;A;Type;Cons. Dist.;Cons. Orient.;PID Dist. setPoint;PID Dist. In;PID Dist. sumErr;PID Dist. Out;PID O setPoint;PID O In;PID O sumErr;PID O Out;Approche;Atteint");
 #endif
 
 	// Test avec une consigne linéaire.
