@@ -30,12 +30,6 @@ int heartTimePrec;
 int heartTime;
 boolean heart;
 
-// Valeur de tempo servo
-unsigned int servoTime;
-const int tempoServo = 700;
-byte servoOpen;
-
-
 // Classe de convertion
 Convertion Conv = Convertion(3.97887357729738, 11.1805555555556);
 
@@ -170,7 +164,6 @@ void setup() {
 
 	// Ini Gestion Etapes
 	gestEtapes = 0;
-	servoOpen = BRAS_FERME;
 }
 
 // Point d'entrée du programme
@@ -244,7 +237,6 @@ int main(void) {
 	Serial.println("X;Y;A;Type;Cons. Dist.;Cons. Orient.;PID Dist. setPoint;PID Dist. In;PID Dist. sumErr;PID Dist. Out;PID O setPoint;PID O In;PID O sumErr;PID O Out;Approche;Atteint");
 #endif
 
-	// Test avec une consigne linéaire.
 	boolean g = false;
 	do {
 		heartBeat();
