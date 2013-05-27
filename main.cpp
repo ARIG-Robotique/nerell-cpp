@@ -227,8 +227,8 @@ int main(void) {
 
 	// Pour tester //
 	// TODO : A supprimer
-	//robotManager.setPosition(0, 0, 0);
-	robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
+	robotManager.setPosition(0, 0, 0);
+	//robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
 
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
