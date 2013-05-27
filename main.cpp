@@ -292,17 +292,16 @@ void nextEtape(){
 	//robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
 	//robotManager.setRampDec(rampDecDistance, rampDecOrientation);
 	switch (gestEtapes) {
-	/*case 0:
-		rc.setType(CONSIGNE_POLAIRE);
-		pol.setConsigneDistance(Conv.mmToPulse(1000));
-		pol.setConsigneOrientation(0);
-		pol.enableFrein();
-		rc.setConsignePolaire(pol);
+	case 0:
+		p.updatePosition(Conv.mmToPulse(1500), 0, 0);
+		rc.setType(CONSIGNE_ODOMETRIE);
+		rc.setPosition(p);
+		rc.enableFrein();
 		robotManager.setConsigneTable(rc);
 		gestEtapes++;
-		break;*/
+		break;
 
-	case 0 :
+	/*case 0 :
 		p.updatePosition(Conv.mmToPulse(800), Conv.mmToPulse(500), 0);
 		rc.setType(CONSIGNE_ODOMETRIE);
 		rc.setPosition(p);
@@ -325,7 +324,7 @@ void nextEtape(){
 		rc.enableFrein();
 		robotManager.setConsigneTable(rc);
 		gestEtapes++;
-		break;
+		break;*/
 	}
 }
 
