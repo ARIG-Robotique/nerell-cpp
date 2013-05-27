@@ -53,11 +53,11 @@ const int cdxStopOffset = 220;
 // ------------------------ //
 // Configuration des rampes //
 // ------------------------ //
-const int rampAccDistance = 300.0; // en mm/s2
+const int rampAccDistance = 100.0; // en mm/s2
 const int rampDecDistance = 100.0; // en mm/s2
 
-const double rampAccOrientation = 300.0; // en mm/s2
-const double rampDecOrientation = 200.0; // en mm/s2
+const double rampAccOrientation = 100.0; // en mm/s2
+const double rampDecOrientation = 100.0; // en mm/s2
 
 // -------------- //
 // Parametres PID //
@@ -283,9 +283,9 @@ void nextEtape(){
 	RobotConsigne rc = RobotConsigne();
 	ConsignePolaire pol = ConsignePolaire();
 	RobotPosition p = RobotPosition();
-	robotManager.setVitesse(400.0, 400.0);
-	robotManager.setRampAcc(100.0, 100.0);
-	robotManager.setRampDec(100.0, 100.0);
+	robotManager.setVitesse(100.0, 100.0);
+	//robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
+	//robotManager.setRampDec(rampDecDistance, rampDecOrientation);
 	switch (gestEtapes) {
 	/*case 0:
 		rc.setType(CONSIGNE_POLAIRE);
