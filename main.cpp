@@ -62,13 +62,13 @@ const double rampDecOrientation = 100.0; // en mm/s2
 // -------------- //
 // Parametres PID //
 // -------------- //
-const double kpDistance = 1.10;
-const double kiDistance = 0.80;
-const double kdDistance = 0.00;
+const double kpDistance = 1.20;
+const double kiDistance = 2.00;
+const double kdDistance = 0.50;
 
 const double kpOrientation = 1.20;
-const double kiOrientation = 0.80;
-const double kdOrientation = 0.00;
+const double kiOrientation = 2.00;
+const double kdOrientation = 0.50;
 
 // Variable pour l'équipe
 byte team;
