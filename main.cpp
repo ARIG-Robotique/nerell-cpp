@@ -293,7 +293,7 @@ void nextEtape(){
 	//robotManager.setRampDec(rampDecDistance, rampDecOrientation);
 	switch (gestEtapes) {
 	case 0:
-		p.updatePosition(Conv.mmToPulse(1500), 0, 0);
+		p.updatePosition(Conv.mmToPulse(1200), 0, 0);
 		rc.setType(CONSIGNE_ODOMETRIE);
 		rc.setPosition(p);
 		rc.enableFrein();
