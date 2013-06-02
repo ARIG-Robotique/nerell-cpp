@@ -30,8 +30,8 @@ int heartTimePrec;
 int heartTime;
 boolean heart;
 
-// Classe de convertion
-Convertion Conv = Convertion(3.97887357729738, 11.1805555555556);
+// Classe de convertion (pour 2000 CPR)
+Convertion Conv = Convertion(15.9154943091895, 44.7222222222222);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
