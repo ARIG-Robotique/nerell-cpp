@@ -53,22 +53,22 @@ const int cdxStopOffset = 220;
 // ------------------------ //
 // Configuration des rampes //
 // ------------------------ //
-const int rampAccDistance = 100.0; // en mm/s2
-const int rampDecDistance = 100.0; // en mm/s2
+const int rampAccDistance = 300.0; // en mm/s2
+const int rampDecDistance = 300.0; // en mm/s2
 
-const double rampAccOrientation = 100.0; // en mm/s2
-const double rampDecOrientation = 100.0; // en mm/s2
+const double rampAccOrientation = 300.0; // en mm/s2
+const double rampDecOrientation = 300.0; // en mm/s2
 
 // -------------- //
 // Parametres PID //
 // -------------- //
-const double kpDistance = 1.20;
-const double kiDistance = 2.00;
-const double kdDistance = 0.50;
+const double kpDistance = 0.30;
+const double kiDistance = 0.20;
+const double kdDistance = 0.00;
 
-const double kpOrientation = 1.20;
-const double kiOrientation = 2.00;
-const double kdOrientation = 0.50;
+const double kpOrientation = 0.50;
+const double kiOrientation = 0.20;
+const double kdOrientation = 0.00;
 
 // Variable pour l'équipe
 byte team;
