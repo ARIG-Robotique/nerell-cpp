@@ -230,8 +230,8 @@ int main(void) {
 
 	// Pour tester //
 	// TODO : A supprimer
-	robotManager.setPosition(0, 0, 0);
-	//robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
+	//robotManager.setPosition(0, 0, 0);
+	robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
 
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
@@ -288,20 +288,18 @@ void nextEtape(){
 	RobotConsigne rc = RobotConsigne();
 	ConsignePolaire pol = ConsignePolaire();
 	RobotPosition p = RobotPosition();
-	robotManager.setVitesse(100.0, 100.0);
-	//robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
-	//robotManager.setRampDec(rampDecDistance, rampDecOrientation);
+	robotManager.setVitesse(300.0, 300.0);
 	switch (gestEtapes) {
-	case 0:
+	/*case 0:
 		p.updatePosition(Conv.mmToPulse(1200), 0, 0);
 		rc.setType(CONSIGNE_ODOMETRIE);
 		rc.setPosition(p);
 		rc.enableFrein();
 		robotManager.setConsigneTable(rc);
 		gestEtapes++;
-		break;
+		break;*/
 
-	/*case 0 :
+	case 0 :
 		p.updatePosition(Conv.mmToPulse(800), Conv.mmToPulse(500), 0);
 		rc.setType(CONSIGNE_ODOMETRIE);
 		rc.setPosition(p);
@@ -315,16 +313,30 @@ void nextEtape(){
 		rc.setPosition(p);
 		rc.enableFrein();
 		robotManager.setConsigneTable(rc);
+		robotManager.setVitesse(100.0, 100.0);
 		gestEtapes++;
 		break;
 	case 2 :
+		servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
+		servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
 		p.updatePosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
 		rc.setType(CONSIGNE_ODOMETRIE);
 		rc.setPosition(p);
 		rc.enableFrein();
 		robotManager.setConsigneTable(rc);
 		gestEtapes++;
-		break;*/
+		break;
+
+	case 3 :
+		closeDoors();
+		pol.setConsigneDistance(0);
+		pol.setConsigneOrientation(-robotManager.getPosition().getAngle());
+		rc.setType(CONSIGNE_POLAIRE);
+		rc.setConsignePolaire(pol);
+		rc.enableFrein();
+		robotManager.setConsigneTable(rc);
+		gestEtapes = 0;
+		break;
 	}
 }
 
