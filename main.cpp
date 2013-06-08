@@ -1,10 +1,10 @@
 #include <Arduino.h>
-#include <Wire.h>
 #include <robot/system/capteurs/Board2007NoMux.h>
 #include <robot/system/capteurs/CapteurDefine.h>
 #include <robot/system/servos/SD21.h>
-#include <robot/utils/Convertion.h>
 #include <robot/RobotManager.h>
+#include <utils/Convertion.h>
+#include <utils/I2CUtils.h>
 
 #include "define.h"
 
@@ -40,7 +40,6 @@ Board2007NoMux capteurs = Board2007NoMux();
 
 // Gestion des étapes
 int gestEtapes;
-
 
 // Position des zones cadeaux pour les servos
 const int cdx1Center = 600;
@@ -90,13 +89,21 @@ void setup() {
 	// ---------- //
 	// Config I2C //
 	// ---------- //
-	Wire.begin();
-#ifdef DEBUG_MODE
-	Serial.println(" - I2C [OK] (Master)");
-#endif
+	i2cUtils.initMaster();
+	i2cUtils.pullup(false);
+	i2cUtils.fastSpeed(false);
 
 	// Tempo attente pour boot autres cartes
 	delay(4000);
+	byte nbDevices = i2cUtils.scan();
+	if (nbDevices != 3) {
+#ifdef DEBUG_MODE
+		Serial.println(" [ ERROR ] Il manque des périphérique I2C");
+#endif
+		// Il manque des périphérique on bloque tout
+		while(1 == 1);
+	}
+
 
 	// ------------- //
 	// Servo manager //
