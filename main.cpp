@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <Wire.h>
+
 #include <robot/system/capteurs/Board2007NoMux.h>
 #include <robot/system/capteurs/CapteurDefine.h>
 #include <robot/system/servos/SD21.h>
@@ -89,7 +91,10 @@ void setup() {
 	// ---------- //
 	// Config I2C //
 	// ---------- //
-	i2cUtils.initMaster();
+	Wire.begin();
+#ifdef DEBUG_MODE
+	Serial.println(" - I2C [OK] (Master)");
+#endif
 	i2cUtils.pullup(false);
 	i2cUtils.fastSpeed(false);
 
@@ -98,12 +103,11 @@ void setup() {
 	byte nbDevices = i2cUtils.scan();
 	if (nbDevices != 3) {
 #ifdef DEBUG_MODE
-		Serial.println(" [ ERROR ] Il manque des périphérique I2C");
+		Serial.println(" [ ERROR ] Il manque des périphérique I2C. Check the connections");
 #endif
 		// Il manque des périphérique on bloque tout
 		while(1 == 1);
 	}
-
 
 	// ------------- //
 	// Servo manager //
@@ -283,7 +287,7 @@ int main(void) {
 // Méthode appelé encore et encore, tant que le temps du match n'est pas écoulé //
 // ---------------------------------------------------------------------------- //
 void matchLoop() {
-	if(robotManager.getTrajetAtteint()) {
+	if(robotManager.getTrajetAtteint() || robotManager.getTrajetEnApproche()) {
 		nextEtape();
 	}
 
@@ -292,57 +296,49 @@ void matchLoop() {
 }
 
 void nextEtape(){
-	RobotConsigne rc = RobotConsigne();
-	ConsignePolaire pol = ConsignePolaire();
-	RobotPosition p = RobotPosition();
-	robotManager.setVitesse(300.0, 300.0);
 	switch (gestEtapes) {
 	/*case 0:
-		p.updatePosition(Conv.mmToPulse(1200), 0, 0);
-		rc.setType(CONSIGNE_ODOMETRIE);
-		rc.setPosition(p);
-		rc.enableFrein();
-		robotManager.setConsigneTable(rc);
+		robotManager.setVitesse(600.0, 600.0);
+		robotManager.gotoPointMM(1200.0, 0.0, true);
 		gestEtapes++;
 		break;*/
 
 	case 0 :
-		p.updatePosition(Conv.mmToPulse(800), Conv.mmToPulse(500), 0);
-		rc.setType(CONSIGNE_ODOMETRIE);
-		rc.setPosition(p);
-		rc.enableFrein();
-		robotManager.setConsigneTable(rc);
+		robotManager.setVitesse(600.0, 600.0);
+		robotManager.gotoPointMM(800.0, 500.0, false);
 		gestEtapes++;
 		break;
 	case 1 :
-		p.updatePosition(Conv.mmToPulse(1300), Conv.mmToPulse(350), 0);
-		rc.setType(CONSIGNE_ODOMETRIE);
-		rc.setPosition(p);
-		rc.enableFrein();
-		robotManager.setConsigneTable(rc);
-		robotManager.setVitesse(100.0, 100.0);
+		robotManager.setVitesse(200.0, 200.0);
+		robotManager.gotoPointMM(1300.0, 350.0, false);
 		gestEtapes++;
 		break;
 	case 2 :
-		servoManager.setPosition(SERVO_PORTE_DROITE, PORTE_DROITE_OPEN);
-		servoManager.setPosition(SERVO_PORTE_GAUCHE, PORTE_GAUCHE_OPEN);
-		p.updatePosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
-		rc.setType(CONSIGNE_ODOMETRIE);
-		rc.setPosition(p);
-		rc.enableFrein();
-		robotManager.setConsigneTable(rc);
+		robotManager.setVitesse(200.0, 200.0);
+		robotManager.gotoPointMM(150.0, 150.0, true);
 		gestEtapes++;
 		break;
 
 	case 3 :
-		closeDoors();
-		pol.setConsigneDistance(0);
-		pol.setConsigneOrientation(-robotManager.getPosition().getAngle());
-		rc.setType(CONSIGNE_POLAIRE);
-		rc.setConsignePolaire(pol);
-		rc.enableFrein();
-		robotManager.setConsigneTable(rc);
-		gestEtapes = 0;
+		robotManager.setVitesse(600.0, 600.0);
+		robotManager.gotoOrientationDeg(0.0);
+		gestEtapes++;
+		break;
+
+	case 4 :
+		robotManager.setVitesse(800.0, 800.0);
+		robotManager.setRampAcc(600.0, 600.0);
+		robotManager.setRampDec(600.0, 600.0);
+		robotManager.avanceMM(1200);
+		gestEtapes++;
+		break;
+
+	case 5 :
+		robotManager.setVitesse(800.0, 800.0);
+		robotManager.setRampAcc(300.0, 300.0);
+		robotManager.setRampDec(300.0, 300.0);
+		robotManager.reculeMM(1200);
+		gestEtapes++;
 		break;
 	}
 }
