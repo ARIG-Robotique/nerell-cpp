@@ -54,11 +54,11 @@ const int cdxStopOffset = 220;
 // ------------------------ //
 // Configuration des rampes //
 // ------------------------ //
-const int rampAccDistance = 300.0; // en mm/s2
-const int rampDecDistance = 300.0; // en mm/s2
+const int rampAccDistance = 800.0; // en mm/s2
+const int rampDecDistance = 800.0; // en mm/s2
 
-const double rampAccOrientation = 300.0; // en mm/s2
-const double rampDecOrientation = 300.0; // en mm/s2
+const double rampAccOrientation = 800.0; // en mm/s2
+const double rampDecOrientation = 800.0; // en mm/s2
 
 // -------------- //
 // Parametres PID //
@@ -297,14 +297,15 @@ void matchLoop() {
 
 void nextEtape(){
 	switch (gestEtapes) {
-	/*case 0:
-		robotManager.setVitesse(600.0, 600.0);
-		robotManager.gotoPointMM(1200.0, 0.0, true);
+	// Pour tester les valeurs de convertions
+	/*case 0 :
+		robotManager.setVitesse(100.0, 100.0);
+		robotManager.avanceMM(1200.0);
 		gestEtapes++;
 		break;*/
 
 	case 0 :
-		robotManager.setVitesse(600.0, 600.0);
+		robotManager.setVitesse(500.0, 500.0);
 		robotManager.gotoPointMM(800.0, 500.0, false);
 		gestEtapes++;
 		break;
@@ -314,29 +315,25 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 	case 2 :
-		robotManager.setVitesse(200.0, 200.0);
+		robotManager.setVitesse(500.0, 500.0);
 		robotManager.gotoPointMM(150.0, 150.0, true);
 		gestEtapes++;
 		break;
 
 	case 3 :
-		robotManager.setVitesse(600.0, 600.0);
+		robotManager.setVitesse(1000.0, 1000.0);
 		robotManager.gotoOrientationDeg(0.0);
 		gestEtapes++;
 		break;
 
 	case 4 :
-		robotManager.setVitesse(800.0, 800.0);
-		robotManager.setRampAcc(600.0, 600.0);
-		robotManager.setRampDec(600.0, 600.0);
+		robotManager.setVitesse(1000.0, 1000.0);
 		robotManager.avanceMM(1200);
 		gestEtapes++;
 		break;
 
 	case 5 :
-		robotManager.setVitesse(800.0, 800.0);
-		robotManager.setRampAcc(300.0, 300.0);
-		robotManager.setRampDec(300.0, 300.0);
+		robotManager.setVitesse(1000.0, 1000.0);
 		robotManager.reculeMM(1200);
 		gestEtapes++;
 		break;
