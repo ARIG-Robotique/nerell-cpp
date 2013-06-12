@@ -26,7 +26,7 @@
 // Configuration de l'asservissement //
 // --------------------------------- //
 
-#define TIME_ASSERV_MS				15
+#define TIME_ASSERV_MS				10
 
 // ------------------------------- //
 // Configuration des servo moteurs //
