@@ -26,6 +26,7 @@ void closeVanne();
 void startGonfleur();
 void stopGonfleur();
 boolean hasObstacle();
+boolean isInPresentArea();
 
 // Heartbeat variables
 int heartTimePrec;
@@ -426,17 +427,23 @@ boolean hasObstacle() {
 	// Juste les deux de devant
 	boolean obstacle = capteurs.readCapteurValue(AVANT_DROIT)
 			|| capteurs.readCapteurValue(AVANT_GAUCHE);
-	if (team == BLEU && gestEtapes <= 13) {
-		// Les cadeaux sont a droite
-		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE);
-	} else if (team == ROUGE && gestEtapes <= 13) {
-		// Les cadeaux sont a gauche
-		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
-	}
 
-	if (gestEtapes > 13) {
+	if (isInPresentArea()) {
+		if (team == BLEU) {
+			// Les cadeaux sont a droite
+			obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE);
+		} else if (team == ROUGE) {
+			// Les cadeaux sont a gauche
+			obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
+		}
+	} else {
+		// Pas dans la zone cadeaux, on active tous les capteurs avant
 		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE)
 				|| capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
 	}
 	return obstacle;
+}
+
+boolean isInPresentArea() {
+	return false;
 }
