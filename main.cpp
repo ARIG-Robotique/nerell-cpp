@@ -306,7 +306,7 @@ void nextEtape(){
 		break;*/
 
 	case 0 :
-		robotManager.setVitesse(500.0, 500.0);
+		robotManager.setVitesse(300.0, 300.0);
 		robotManager.gotoPointMM(800.0, 500.0, false);
 		gestEtapes++;
 		break;
@@ -316,26 +316,27 @@ void nextEtape(){
 		gestEtapes++;
 		break;
 	case 2 :
-		robotManager.setVitesse(500.0, 500.0);
+		robotManager.setVitesse(300.0, 500.0);
 		robotManager.gotoPointMM(150.0, 150.0, true);
 		gestEtapes++;
 		break;
 
 	case 3 :
+	case 6 :
 		robotManager.setVitesse(1000.0, 1000.0);
 		robotManager.gotoOrientationDeg(0.0);
 		gestEtapes++;
 		break;
 
 	case 4 :
-		robotManager.setVitesse(1000.0, 1000.0);
-		robotManager.avanceMM(1200);
+		robotManager.setVitesse(100.0, 100.0);
+		robotManager.alignFrontTo(1000.0, 1500.0);
 		gestEtapes++;
 		break;
 
 	case 5 :
 		robotManager.setVitesse(1000.0, 1000.0);
-		robotManager.reculeMM(1200);
+		robotManager.alignBackTo(1000.0, 1500.0);
 		gestEtapes++;
 		break;
 	}
