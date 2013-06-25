@@ -3,6 +3,7 @@
 
 #include <robot/system/capteurs/Board2007NoMux.h>
 #include <robot/system/capteurs/CapteurDefine.h>
+#include <robot/system/motors/SD21Motors.h>
 #include <robot/system/servos/SD21.h>
 #include <robot/RobotManager.h>
 #include <utils/Convertion.h>
@@ -39,6 +40,7 @@ Convertion Conv = Convertion(15.9154943091895, 44.7222222222222);
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
+SD21Motors motorsPropulsion = SD21Motors();
 Board2007NoMux capteurs = Board2007NoMux();
 
 // Gestion des étapes
@@ -123,16 +125,23 @@ void setup() {
 	servoManager.setSpeed(SERVO_PORTE_DROITE, SPEED_PORTE);
 	servoManager.setSpeed(SERVO_PORTE_GAUCHE, SPEED_PORTE);
 
+	// --------------------- //
+	// Moteurs de propulsion //
+	// --------------------- //
+	motorsPropulsion.assignMotors(ASSIGN_MOTOR_1, ASSIGN_MOTOR_2);
+
 	// ------------- //
 	// Robot manager //
 	// ------------- //
+	robotManager.setMotorsImpl(&motorsPropulsion);
+	robotManager.setHasObstacle(hasObstacle);
+
 	robotManager.init();
 	robotManager.setSampleTime(TIME_ASSERV_MS);
 	robotManager.setPIDDistance(kpDistance, kiDistance, kdDistance);
 	robotManager.setPIDOrientation(kpOrientation, kiOrientation, kdOrientation);
 	robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
 	robotManager.setRampDec(rampDecDistance, rampDecOrientation);
-	robotManager.setHasObstacle(hasObstacle);
 
 #ifdef DEBUG_MODE
 	Serial.println(" - Robot manager [OK]");
