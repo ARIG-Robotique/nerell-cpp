@@ -307,46 +307,16 @@ void matchLoop() {
 void nextEtape(){
 	switch (gestEtapes) {
 	// Pour tester les valeurs de convertions
-	/*case 0 :
-		robotManager.setVitesse(100.0, 100.0);
-		robotManager.avanceMM(1200.0);
-		gestEtapes++;
-		break;*/
-
 	case 0 :
+		robotManager.setVitesse(100.0, 100.0);
+		robotManager.gotoPointMM(1200.0, 150.0, true);
+		gestEtapes++;
+		break;
+	/*case 1 :
 		robotManager.setVitesse(300.0, 300.0);
-		robotManager.gotoPointMM(800.0, 500.0, false);
-		gestEtapes++;
-		break;
-	case 1 :
-		robotManager.setVitesse(200.0, 200.0);
-		robotManager.gotoPointMM(1300.0, 350.0, false);
-		gestEtapes++;
-		break;
-	case 2 :
-		robotManager.setVitesse(300.0, 500.0);
 		robotManager.gotoPointMM(150.0, 150.0, true);
 		gestEtapes++;
-		break;
-
-	case 3 :
-	case 6 :
-		robotManager.setVitesse(1000.0, 1000.0);
-		robotManager.gotoOrientationDeg(0.0);
-		gestEtapes++;
-		break;
-
-	case 4 :
-		robotManager.setVitesse(100.0, 100.0);
-		robotManager.alignFrontTo(1000.0, 1500.0);
-		gestEtapes++;
-		break;
-
-	case 5 :
-		robotManager.setVitesse(1000.0, 1000.0);
-		robotManager.alignBackTo(1000.0, 1500.0);
-		gestEtapes++;
-		break;
+		break;*/
 	}
 }
 
@@ -433,24 +403,33 @@ void stopGonfleur() {
  * Méthode retournant l'information de présence d'un obstacle (adversaire ???)
  */
 boolean hasObstacle() {
-	// Juste les deux de devant
+	return false;
+/*
+	// Juste les deux de devant et les deux de dérriere
 	boolean obstacle = capteurs.readCapteurValue(AVANT_DROIT)
-			|| capteurs.readCapteurValue(AVANT_GAUCHE);
+			|| capteurs.readCapteurValue(AVANT_GAUCHE)
+			|| capteurs.readCapteurValue(ARRIERE_DROIT)
+			|| capteurs.readCapteurValue(ARRIERE_GAUCHE);
 
 	if (isInPresentArea()) {
 		if (team == BLEU) {
 			// Les cadeaux sont a droite
-			obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE);
+			obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE)
+						|| capteurs.readCapteurValue(LATERAL_ARRIERE_GAUCHE);
 		} else if (team == ROUGE) {
 			// Les cadeaux sont a gauche
-			obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
+			obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_DROIT)
+						|| capteurs.readCapteurValue(LATERAL_ARRIERE_DROIT);
 		}
 	} else {
-		// Pas dans la zone cadeaux, on active tous les capteurs avant
+		// Pas dans la zone cadeaux, on active tous les capteurs avant et arriere
 		obstacle = obstacle || capteurs.readCapteurValue(LATERAL_AVANT_GAUCHE)
-				|| capteurs.readCapteurValue(LATERAL_AVANT_DROIT);
+				|| capteurs.readCapteurValue(LATERAL_AVANT_DROIT)
+				|| capteurs.readCapteurValue(LATERAL_ARRIERE_GAUCHE)
+				|| capteurs.readCapteurValue(LATERAL_ARRIERE_DROIT);
 	}
 	return obstacle;
+*/
 }
 
 boolean isInPresentArea() {
