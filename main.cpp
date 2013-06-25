@@ -3,6 +3,7 @@
 
 #include <robot/system/capteurs/Board2007NoMux.h>
 #include <robot/system/capteurs/CapteurDefine.h>
+#include <robot/system/encoders/ARIGEncodeurs.h>
 #include <robot/system/motors/SD21Motors.h>
 #include <robot/system/servos/SD21.h>
 #include <robot/RobotManager.h>
@@ -41,6 +42,7 @@ Convertion Conv = Convertion(15.9954716675272, 44.9469570072585);
 RobotManager robotManager = RobotManager();
 SD21 servoManager = SD21();
 SD21Motors motorsPropulsion = SD21Motors();
+ARIGEncodeurs encodeurs = ARIGEncodeurs();
 Board2007NoMux capteurs = Board2007NoMux();
 
 // Gestion des étapes
@@ -130,10 +132,16 @@ void setup() {
 	// --------------------- //
 	motorsPropulsion.assignMotors(ASSIGN_MOTOR_2, ASSIGN_MOTOR_1);
 
+	// --------- //
+	// Encodeurs //
+	// --------- //
+	encodeurs.setCoefs(1.0, 1.0);
+
 	// ------------- //
 	// Robot manager //
 	// ------------- //
 	robotManager.setMotorsImpl(&motorsPropulsion);
+	robotManager.setEncodeursImpl(&encodeurs);
 	robotManager.setHasObstacle(hasObstacle);
 	robotManager.setSampleTime(TIME_ASSERV_MS);
 	robotManager.setPIDDistance(kpDistance, kiDistance, kdDistance);
