@@ -70,9 +70,9 @@ const double kpDistance = 0.30;
 const double kiDistance = 0.20;
 const double kdDistance = 0.90;
 
-const double kpOrientation = 0.50;
-const double kiOrientation = 0.20;
-const double kdOrientation = 0.90;
+const double kpOrientation = 1.00;
+const double kiOrientation = 0.10;
+const double kdOrientation = 1.00;
 
 // Variable pour l'équipe
 byte team;
