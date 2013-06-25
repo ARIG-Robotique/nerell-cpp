@@ -128,20 +128,19 @@ void setup() {
 	// --------------------- //
 	// Moteurs de propulsion //
 	// --------------------- //
-	motorsPropulsion.assignMotors(ASSIGN_MOTOR_1, ASSIGN_MOTOR_2);
+	motorsPropulsion.assignMotors(ASSIGN_MOTOR_2, ASSIGN_MOTOR_1);
 
 	// ------------- //
 	// Robot manager //
 	// ------------- //
 	robotManager.setMotorsImpl(&motorsPropulsion);
 	robotManager.setHasObstacle(hasObstacle);
-
-	robotManager.init();
 	robotManager.setSampleTime(TIME_ASSERV_MS);
 	robotManager.setPIDDistance(kpDistance, kiDistance, kdDistance);
 	robotManager.setPIDOrientation(kpOrientation, kiOrientation, kdOrientation);
 	robotManager.setRampAcc(rampAccDistance, rampAccOrientation);
 	robotManager.setRampDec(rampDecDistance, rampDecOrientation);
+	robotManager.init();
 
 #ifdef DEBUG_MODE
 	Serial.println(" - Robot manager [OK]");
