@@ -108,7 +108,7 @@ void setup() {
 	// Tempo attente pour boot autres cartes
 	delay(4000);
 	byte nbDevices = i2cUtils.scan();
-	if (nbDevices != 3) {
+	if (nbDevices != NB_I2C_DEVICE) {
 #ifdef DEBUG_MODE
 		Serial.println(" [ ERROR ] Il manque des périphérique I2C. Check the connections");
 #endif

@@ -25,9 +25,10 @@
 // ---------------------- //
 // Adresse des cartes I2C //
 // ---------------------- //
+#define NB_I2C_DEVICE				3
 
 #define SD21_ADD_BOARD				0x61
-#define MD22_ADD_BOARD				0x58
+//#define MD22_ADD_BOARD				0x58
 #define ENCODEUR_GAUCHE_BOARD	 	0xB2
 #define ENCODEUR_DROIT_BOARD	  	0xB0
 
