@@ -40,10 +40,12 @@ Convertion Conv = Convertion(15.9954716675272, 44.9469570072585);
 
 // Classe de gestion du robot (asserv, odométrie, pathfinding, evittement, etc...)
 RobotManager robotManager = RobotManager();
-SD21 servoManager = SD21();
-SD21Motors motorsPropulsion = SD21Motors();
-ARIGEncodeurs encodeurs = ARIGEncodeurs();
 Board2007NoMux capteurs = Board2007NoMux();
+
+// I2C Boards
+SD21 servoManager = SD21(SD21_ADD_BOARD);
+SD21Motors motorsPropulsion = SD21Motors(SD21_ADD_BOARD);
+ARIGEncodeurs encodeurs = ARIGEncodeurs(ENCODEUR_GAUCHE_BOARD, ENCODEUR_DROIT_BOARD);
 
 // Gestion des étapes
 int gestEtapes;

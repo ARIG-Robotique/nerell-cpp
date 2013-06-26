@@ -22,6 +22,15 @@
 #define ROUGE						1
 #define BLEU						0
 
+// ---------------------- //
+// Adresse des cartes I2C //
+// ---------------------- //
+
+#define SD21_ADD_BOARD				0x61
+#define MD22_ADD_BOARD				0x58
+#define ENCODEUR_GAUCHE_BOARD	 	0xB2
+#define ENCODEUR_DROIT_BOARD	  	0xB0
+
 // --------------------------------- //
 // Configuration de l'asservissement //
 // --------------------------------- //
