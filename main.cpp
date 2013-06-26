@@ -78,6 +78,10 @@ const double kpOrientation = 1.00;
 const double kiOrientation = 0.10;
 const double kdOrientation = 1.00;
 
+// Constantes d'ajustement pour les roues folles
+const double coefRoueDroite = 1.00;
+const double coefRoueGauche = 1.00;
+
 // Variable pour l'équipe
 byte team;
 
@@ -137,7 +141,7 @@ void setup() {
 	// --------- //
 	// Encodeurs //
 	// --------- //
-	encodeurs.setCoefs(1.0, 1.0);
+	encodeurs.setCoefs(coefRoueGauche, coefRoueDroite);
 
 	// ------------- //
 	// Robot manager //
