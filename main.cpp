@@ -265,7 +265,7 @@ int main(void) {
 	// Pour tester //
 	// TODO : A supprimer
 	//robotManager.setPosition(0, 0, 0);
-	robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(150), 0);
+	robotManager.setPosition(Conv.mmToPulse(300), Conv.mmToPulse(300), Conv.degToPulse(90));
 
 #ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
@@ -322,15 +322,25 @@ void nextEtape(){
 	switch (gestEtapes) {
 	// Pour tester les valeurs de convertions
 	case 0 :
-		robotManager.setVitesse(100.0, 100.0);
-		robotManager.gotoPointMM(1200.0, 150.0, true);
+		robotManager.setVitesse(300.0, 600.0);
+		robotManager.gotoPointMM(300.0, 2500.0, false);
 		gestEtapes++;
 		break;
-	/*case 1 :
-		robotManager.setVitesse(300.0, 300.0);
-		robotManager.gotoPointMM(150.0, 150.0, true);
+	case 1 :
+		robotManager.setVitesse(300.0, 600.0);
+		robotManager.gotoPointMM(1800.0, 2800.0, false);
 		gestEtapes++;
-		break;*/
+		break;
+	case 2 :
+		robotManager.setVitesse(300.0, 600.0);
+		robotManager.gotoPointMM(2000.0, 300.0, false);
+		gestEtapes++;
+		break;
+	case 3 :
+		robotManager.setVitesse(100.0, 300.0);
+		robotManager.gotoPointMM(300.0, 300.0, true);
+		gestEtapes++;
+		break;
 	}
 }
 
