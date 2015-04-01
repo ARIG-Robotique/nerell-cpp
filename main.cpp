@@ -4,7 +4,7 @@
 #include <robot/system/capteurs/Board2007NoMux.h>
 #include <robot/system/capteurs/CapteurDefine.h>
 #include <robot/system/encoders/ARIGEncodeurs.h>
-#include <robot/system/motors/SD21Motors.h>
+#include <robot/system/motors/MD22.h>
 #include <robot/system/servos/SD21.h>
 #include <robot/RobotManager.h>
 #include <utils/Convertion.h>
@@ -44,7 +44,7 @@ Board2007NoMux capteurs = Board2007NoMux();
 
 // I2C Boards
 SD21 servoManager = SD21(SD21_ADD_BOARD);
-SD21Motors motorsPropulsion = SD21Motors(SD21_ADD_BOARD);
+MD22 motorsPropulsion = MD22(MD22_ADD_BOARD, 0, 0);
 ARIGEncodeurs encodeurs = ARIGEncodeurs(ENCODEUR_GAUCHE_BOARD, ENCODEUR_DROIT_BOARD);
 
 // Gestion des étapes
@@ -114,7 +114,7 @@ void setup() {
 	byte nbDevices = i2cUtils.scan();
 	if (nbDevices != NB_I2C_DEVICE) {
 #ifdef DEBUG_MODE
-		Serial.println(" [ ERROR ] Il manque des périphérique I2C. Check the connections");
+		Serial.println(" [ ERROR ] Il manque des périphériques I2C. Check the connections");
 #endif
 		// Il manque des périphérique on bloque tout
 		while(1 == 1);
@@ -136,6 +136,9 @@ void setup() {
 	// --------------------- //
 	// Moteurs de propulsion //
 	// --------------------- //
+#ifdef DEBUG_MODE
+	motorsPropulsion.printVersion();
+#endif
 	motorsPropulsion.assignMotors(ASSIGN_MOTOR_2, ASSIGN_MOTOR_1);
 
 	// --------- //
