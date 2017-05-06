@@ -94,7 +94,7 @@ void setup() {
 	// ------------------------------------------------------------- //
 	// Initialisation du port série en debug seulement (cf define.h) //
 	// ------------------------------------------------------------- //
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.begin(115200);
 	Serial.println(" == INITIALISATION ROBOT RECYCLE ==");
 #endif
@@ -103,7 +103,7 @@ void setup() {
 	// Config I2C //
 	// ---------- //
 	Wire.begin();
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" - I2C [OK] (Master)");
 #endif
 	i2cUtils.pullup(false);
@@ -113,7 +113,7 @@ void setup() {
 	delay(4000);
 	byte nbDevices = i2cUtils.scan();
 	if (nbDevices != NB_I2C_DEVICE) {
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 		Serial.println(" [ ERROR ] Il manque des périphériques I2C. Check the connections");
 #endif
 		// Il manque des périphérique on bloque tout
@@ -123,7 +123,7 @@ void setup() {
 	// ------------- //
 	// Servo manager //
 	// ------------- //
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	servoManager.printVersion();
 #endif
 
@@ -136,7 +136,7 @@ void setup() {
 	// --------------------- //
 	// Moteurs de propulsion //
 	// --------------------- //
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	motorsPropulsion.printVersion();
 #endif
 	motorsPropulsion.assignMotors(ASSIGN_MOTOR_2, ASSIGN_MOTOR_1);
@@ -159,7 +159,7 @@ void setup() {
 	robotManager.setRampDec(rampDecDistance, rampDecOrientation);
 	robotManager.init();
 
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" - Robot manager [OK]");
 #endif
 
@@ -178,7 +178,7 @@ void setup() {
 	capteurs.setPinForCapteur(ARRIERE_GAUCHE, ARRIERE_GAUCHE_PIN, true, true);
 	capteurs.setPinForCapteur(AVANT_DROIT, AVANT_DROIT_PIN, true, true);
 	capteurs.setPinForCapteur(AVANT_GAUCHE, AVANT_GAUCHE_PIN, true, true);
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" - Capteurs [OK]");
 #endif
 
@@ -186,7 +186,7 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(GONFLEUR, OUTPUT);
 	pinMode(ELECTRO_VANNE, OUTPUT);
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" - Outputs [OK]");
 #endif
 
@@ -211,7 +211,7 @@ int main(void) {
 	// Initialisation de l'application
 	setup();
 
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	// Affichage de la couleur de l'équipe
 	team = capteurs.readCapteurValue(EQUIPE);
 	Serial.print(" ========================= > ");
@@ -222,14 +222,14 @@ int main(void) {
 #endif
 
 	if (!capteurs.readCapteurValue(TIRETTE)) {
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 		Serial.println(" -> /!\\ La tirette n'est pas présente il faut d'abord la mettre !");
 		while(!capteurs.readCapteurValue(TIRETTE));
 		delay(1000);
 #endif
 	}
 
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" -> Attente depart tirette ...");
 #endif
 
@@ -250,16 +250,16 @@ int main(void) {
 	robotManager.resetEncodeurs();
 
 	team = capteurs.readCapteurValue(EQUIPE);
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.print(" - Equipe : ");
 #endif
 	if (team == ROUGE) {
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 		Serial.println("ROUGE");
 #endif
 		robotManager.setPosition(Conv.mmToPulse(2850), Conv.mmToPulse(250), Conv.degToPulse(135));
 	} else {
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 		Serial.println("BLEU");
 #endif
 		robotManager.setPosition(Conv.mmToPulse(150), Conv.mmToPulse(250), Conv.degToPulse(45));
@@ -270,7 +270,7 @@ int main(void) {
 	//robotManager.setPosition(0, 0, 0);
 	robotManager.setPosition(Conv.mmToPulse(300), Conv.mmToPulse(300), Conv.degToPulse(90));
 
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" == DEBUT DU MATCH ==");
 
 	// En tête de log
@@ -294,7 +294,7 @@ int main(void) {
 	// Plus de mouvement on arrete les moteurs.
 	robotManager.stop();
 
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" == FIN DU MATCH ==");
 #endif
 	// Attente du temps de démarrage de la fin du match
@@ -351,7 +351,7 @@ void nextEtape(){
 // Méthode appelé pour la fin du match //
 // ----------------------------------- //
 void startFunnyAction() {
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" == START FUNNY ACTION ==");
 #endif
 	startGonfleur();
@@ -359,7 +359,7 @@ void startFunnyAction() {
 }
 
 void endMatch() {
-#ifdef MAIN_DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(" == FIN FUNNY ACTION ==");
 #endif
 	stopGonfleur();
