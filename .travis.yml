@@ -15,14 +15,6 @@ cache:
   directories:
     - $HOME/$ARDUINO_SDK_BASE_PATH-$ARDUINO_SDK_VERSION
 
-addons:
-  apt:
-    packages:
-      - binutils-avr
-      - avr-libc
-      - avrdude
-      - cmake
-
 before_install:
   - sdk_path="$HOME/$ARDUINO_SDK_BASE_PATH-$ARDUINO_SDK_VERSION"
   - mkdir -p "$sdk_path"
