@@ -13,7 +13,7 @@ if (NOT DEFINED ARDUINO_UPLOAD)
 endif()
 
 # Définition de la tool chain de build
-set(CMAKE_TOOLCHAIN_FILE ../arduino-cmake-ng/cmake/Arduino-Toolchain.cmake)
+set(CMAKE_TOOLCHAIN_FILE ./cmake/Arduino-Toolchain.cmake)
 
 # Compilateur flags
 #set(ARDUINO_C_FLAGS      "-ffunction-sections -fdata-sections")
@@ -33,22 +33,19 @@ project(NerellRobot C CXX ASM)
 # Récupération de la board
 get_board_id(board_id mega atmega2560)
 
-# RobotSystemLib
-file(GLOB_RECURSE LIB_SOURCES "../robot-system-lib/src/*.cpp" "../robot-system-lib/src/*.c")
-file(GLOB_RECURSE LIB_HEADERS "../robot-system-lib/src/*.h")
-add_library(RobotSystem STATIC ${LIB_SOURCES} ${LIB_HEADERS})
-target_include_directories(RobotSystem PUBLIC ../robot-system-lib/src)
-
-# Wire Lib
-find_library_header_files("${ARDUINO_CMAKE_PLATFORM_LIBRARIES_PATH}/Wire/src" wire_lib_headers)
-find_library_source_files("${ARDUINO_CMAKE_PLATFORM_LIBRARIES_PATH}/Wire/src" wire_lib_source_files)
-set(wire_lib_sources ${wire_lib_headers} ${wire_lib_source_files})
-target_include_directories(RobotSystem PUBLIC ${ARDUINO_CMAKE_PLATFORM_LIBRARIES_PATH}/Wire/src)
-
 # Build
 add_arduino_executable(NerellRobot ${board_id} src/main.cpp src/define.h)
-link_platform_library(NerellRobot Wire ${board_id})
+
+# RobotSystemLib
+file(GLOB_RECURSE LIB_SOURCES "./robot-system-lib/src/*.cpp" "./robot-system-lib/src/*.c")
+file(GLOB_RECURSE LIB_HEADERS "./robot-system-lib/src/*.h")
+add_library(RobotSystem STATIC ${LIB_SOURCES} ${LIB_HEADERS})
+target_include_directories(RobotSystem PUBLIC ./robot-system-lib/src)
 link_arduino_library(NerellRobot RobotSystem ${board_id})
+
+# Wire Lib
+link_platform_library(RobotSystem Wire ${board_id})
+link_platform_library(NerellRobot Wire ${board_id})
 
 # Upload
 if (ARDUINO_UPLOAD)
