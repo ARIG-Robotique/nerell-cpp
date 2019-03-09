@@ -7,13 +7,11 @@
 # Contrôle de la version minimale de CMake
 cmake_minimum_required(VERSION 3.8.2)
 
-# Pas d'upload par défaut
-if (NOT DEFINED ARDUINO_UPLOAD)
-    set(ARDUINO_UPLOAD false)
-endif()
-
 # Définition de la tool chain de build
 set(CMAKE_TOOLCHAIN_FILE ./cmake/Arduino-Toolchain.cmake)
+
+# Fix bug in avrdude.conf included in ArduinoSDK
+set(ARDUINO_CMAKE_AVRDUDE_CONFIG_PATH /etc/avrdude/avrdude.conf)
 
 # Compilateur flags
 #set(ARDUINO_C_FLAGS      "-ffunction-sections -fdata-sections")
@@ -22,35 +20,28 @@ set(CMAKE_TOOLCHAIN_FILE ./cmake/Arduino-Toolchain.cmake)
 
 set(ARDUINO_CXX_FLAGS    "-std=c++11")
 
-#add_definitions(-DDEBUG_MODE)
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(STATUS "Debug mode ON")
+    add_definitions(-DDEBUG_MODE)
+endif()
 
 #====================================================================#
 #  Setup Project                                                     #
 #====================================================================#
 
 project(NerellRobot C CXX ASM)
-
-# Récupération de la board
-get_board_id(board_id mega atmega2560)
+arduino_cmake_project(NerellRobot BOARD_NAME megaADK BOARD_CPU atmega2560)
 
 # Build
-add_arduino_executable(NerellRobot ${board_id} src/main.cpp src/define.h)
-
-# RobotSystemLib
-file(GLOB_RECURSE LIB_SOURCES "./robot-system-lib/src/*.cpp" "./robot-system-lib/src/*.c")
-file(GLOB_RECURSE LIB_HEADERS "./robot-system-lib/src/*.h")
-add_library(RobotSystem STATIC ${LIB_SOURCES} ${LIB_HEADERS})
-target_include_directories(RobotSystem PUBLIC ./robot-system-lib/src)
-link_arduino_library(NerellRobot RobotSystem ${board_id})
+add_arduino_executable(NerellRobot src/main.cpp src/define.h)
 
 # Wire Lib
-link_platform_library(RobotSystem Wire ${board_id})
-link_platform_library(NerellRobot Wire ${board_id})
+find_arduino_library(Wire Wire)
+link_arduino_library(NerellRobot Wire)
+
+# RobotSystemLib
+find_arduino_library(RobotSystem robot-system-lib)
+link_arduino_library(NerellRobot RobotSystem)
 
 # Upload
-if (ARDUINO_UPLOAD)
-    message("-- Upload enabled")
-    upload_arduino_target(NerellRobot "${board_id}" /dev/ttyUSB0)
-else()
-    message("-- Upload disabled")
-endif()
+set_target_upload_port(NerellRobot /dev/ttyUSB0)
